@@ -10,18 +10,18 @@ public class SwingHandler : MonoBehaviour {
 	}
 
 	private SwingState m_currentSwingState;
+    public Rigidbody m_ballRigidBody;
 
-	// Use this for initialization
 	void Start () {
 		m_currentSwingState = SwingState.Unstarted;
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		m_currentSwingState = SetCurrentSwingState ();
 
-		if (m_currentSwingState == SwingState.Started) {
-			
+        if (m_currentSwingState == SwingState.Started) {
+            Debug.Log("Performing swing.");
+            m_ballRigidBody.AddForce(m_ballRigidBody.transform.forward * 1000.0f);
 		} else {
 
 		}
@@ -30,11 +30,13 @@ public class SwingHandler : MonoBehaviour {
 	private SwingState SetCurrentSwingState () {
 		if (m_currentSwingState == SwingState.Unstarted) {
 			if (Input.GetMouseButtonDown(0)) {
-				return SwingState.Started;
+                Debug.Log("Starting swing.");
+                return SwingState.Started;
 			}
 		} else if (m_currentSwingState == SwingState.Started) {
 			if (Input.GetMouseButtonUp(0)) {
-				return SwingState.Unstarted;
+                Debug.Log("Ending swing.");
+                return SwingState.Unstarted;
 			}
 		}
 
