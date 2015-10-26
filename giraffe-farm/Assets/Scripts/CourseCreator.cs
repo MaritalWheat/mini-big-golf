@@ -40,7 +40,7 @@ public class CourseCreator : MonoBehaviour {
             {
                 Renderer renderer = lastBlock.GetComponentInChildren<Renderer>();
                 Vector3 nextPos = Vector3.zero;
-                if (lastBlock.name.Contains("corner") && !lastBlock.name.Contains("right"))
+                if (lastBlock.name.Contains("corner") && !lastBlock.name.Contains("right") && !lastBlock.name.Contains("r_forward"))
                 {
                     nextPos = new Vector3(renderer.transform.position.x, renderer.transform.position.y, renderer.transform.position.z + (4 * renderer.bounds.extents.z));
                 }
@@ -72,10 +72,6 @@ public class CourseCreator : MonoBehaviour {
                 }
                 m_course.Add(GameObject.Instantiate(m_blockTypesRight[Random.Range(0, m_blockTypesRight.Count)], nextPos, Quaternion.identity) as GameObject);
                 GameObject placed = m_course[m_course.Count - 1];
-                if (placed.name.Contains("corner"))
-                {
-                    placed.transform.position = new Vector3(placed.transform.position.x + (2 * renderer.bounds.extents.x), placed.transform.position.y, placed.transform.position.z - (2 * renderer.bounds.extents.x));
-                }
             }
         }
 
