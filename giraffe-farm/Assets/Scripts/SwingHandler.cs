@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SwingHandler : MonoBehaviour {
 
-    public Rigidbody m_ballRigidBody;
+    private Rigidbody m_ballRigidBody;
 
     private enum SwingState {
 		Unstarted,
@@ -22,7 +22,14 @@ public class SwingHandler : MonoBehaviour {
 	}
 	
 	void Update () {
-		m_currentSwingState = SetCurrentSwingState ();
+        if (m_ballRigidBody == null)
+        {
+            m_ballRigidBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
+        }
+        else
+        {
+            m_currentSwingState = SetCurrentSwingState();
+        }
 
         
 	}
