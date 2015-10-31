@@ -8,7 +8,6 @@ public class CourseCreator : MonoBehaviour {
     public List<GameObject> m_blockTypesLeft = new List<GameObject>();
     public List<GameObject> m_blockTypesRight = new List<GameObject>();
     public List<GameObject> m_course = new List<GameObject>();
-    private Quaternion m_currRotation = Quaternion.identity;
 
     private enum Direction
     {
@@ -71,7 +70,7 @@ public class CourseCreator : MonoBehaviour {
                     nextPos = new Vector3(renderer.transform.position.x + (2 * renderer.bounds.extents.x), renderer.transform.position.y, renderer.transform.position.z);
                 }
                 m_course.Add(GameObject.Instantiate(m_blockTypesRight[Random.Range(0, m_blockTypesRight.Count)], nextPos, Quaternion.identity) as GameObject);
-                GameObject placed = m_course[m_course.Count - 1];
+                //GameObject placed = m_course[m_course.Count - 1];
             }
         }
 
