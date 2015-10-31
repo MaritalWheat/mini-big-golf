@@ -16,7 +16,7 @@ public class CameraManager : MonoBehaviour {
         }
         else
         {
-            Camera.main.transform.position = new Vector3(m_ball.position.x, m_ball.position.y + 1.0f, m_ball.position.z - 2.0f);
+            Camera.main.transform.position = new Vector3(m_ball.position.x, m_ball.position.y + 2.0f, m_ball.position.z - 5.0f);
             Camera.main.transform.LookAt(m_ball);
         }
     }
