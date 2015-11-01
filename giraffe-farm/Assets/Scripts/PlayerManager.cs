@@ -8,6 +8,8 @@ public class PlayerManager : MonoBehaviour {
     private GameObject m_startMarker;
 	private GameObject m_ball;
 
+	private int m_hits;
+
 	void Start () {
        if (Instance == null) {
 			Instance = this;
@@ -34,5 +36,16 @@ public class PlayerManager : MonoBehaviour {
 	public static void Reset () {
 		Instance.m_ball.transform.position = Instance.m_startMarker.transform.position;
 		Instance.m_ball.GetComponent<Rigidbody> ().Sleep ();
+		Instance.ResetHits ();
+	}
+
+	private void ResetHits() {
+		m_hits = 0;
+		UIManager.UpdateHits (m_hits);
+	}
+
+	public static void IncrementHits() {
+		Instance.m_hits++;
+		UIManager.UpdateHits (Instance.m_hits);
 	}
 }

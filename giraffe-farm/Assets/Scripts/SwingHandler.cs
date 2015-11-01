@@ -46,6 +46,7 @@ public class SwingHandler : MonoBehaviour {
             Debug.Log("Acceleration: " + velocity);
             m_ballRigidBody.AddForce(Vector3.Normalize(m_swingInputDirection) * velocity);
             m_currentSwingState = SwingState.Unstarted;
+			PlayerManager.IncrementHits();
         }
         else
         {
