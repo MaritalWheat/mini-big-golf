@@ -24,10 +24,10 @@ public class CourseCreator : MonoBehaviour {
     
 	void Start () {
         m_course.Add(GameObject.Instantiate(m_blockTypesForward[0], Vector3.zero, Quaternion.identity) as GameObject);
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 2; i++)
         {
 			bool courseEnd = false;
-			if (i == 9) {
+			if (i == 1) {
 				courseEnd = true;
 			}
             GameObject lastBlock = m_course[m_course.Count - 1];
