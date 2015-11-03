@@ -7,6 +7,9 @@ public class CourseCreator : MonoBehaviour {
     public List<GameObject> m_blockTypesForward = new List<GameObject>();
     public List<GameObject> m_blockTypesLeft = new List<GameObject>();
     public List<GameObject> m_blockTypesRight = new List<GameObject>();
+	public List<GameObject> m_blockTypesForwardEnd = new List<GameObject> ();
+	public List<GameObject> m_blockTypesLeftEnd = new List<GameObject> ();
+	public List<GameObject> m_blockTypesRightEnd = new List<GameObject> ();
     public List<GameObject> m_course = new List<GameObject>();
 
     private enum Direction
@@ -23,6 +26,10 @@ public class CourseCreator : MonoBehaviour {
         m_course.Add(GameObject.Instantiate(m_blockTypesForward[0], Vector3.zero, Quaternion.identity) as GameObject);
         for (int i = 0; i < 10; i++)
         {
+			bool courseEnd = false;
+			if (i == 9) {
+				courseEnd = true;
+			}
             GameObject lastBlock = m_course[m_course.Count - 1];
             if (lastBlock.name.Contains("left"))
             {
@@ -47,12 +54,21 @@ public class CourseCreator : MonoBehaviour {
                 {
                     nextPos = new Vector3(renderer.transform.position.x, renderer.transform.position.y, renderer.transform.position.z + (2 * renderer.bounds.extents.z));
                 }
-                m_course.Add(GameObject.Instantiate(m_blockTypesForward[Random.Range(1, m_blockTypesForward.Count)], nextPos, Quaternion.identity) as GameObject);
+
+				if (courseEnd) {
+					m_course.Add(GameObject.Instantiate(m_blockTypesForwardEnd[0], nextPos, Quaternion.identity) as GameObject);
+				} else {
+                	m_course.Add(GameObject.Instantiate(m_blockTypesForward[Random.Range(1, m_blockTypesForward.Count)], nextPos, Quaternion.identity) as GameObject);
+				}
             } else if (m_currentDirection == Direction.Left) {
                 Renderer renderer = lastBlock.GetComponentInChildren<Renderer>();
                 Vector3 nextPos = new Vector3(renderer.transform.position.x - (2 * renderer.bounds.extents.x), renderer.transform.position.y, renderer.transform.position.z);
-                m_course.Add(GameObject.Instantiate(m_blockTypesLeft[Random.Range(0, m_blockTypesLeft.Count)], nextPos, Quaternion.identity) as GameObject);
-                GameObject placed = m_course[m_course.Count - 1];
+				if (courseEnd) {
+					m_course.Add(GameObject.Instantiate(m_blockTypesLeftEnd[0], nextPos, Quaternion.identity) as GameObject);
+				} else {	
+					m_course.Add(GameObject.Instantiate(m_blockTypesLeft[Random.Range(0, m_blockTypesLeft.Count)], nextPos, Quaternion.identity) as GameObject);
+				}
+				GameObject placed = m_course[m_course.Count - 1];
                 if (placed.name.Contains("corner"))
                 {
                     placed.transform.position = new Vector3(placed.transform.position.x + (2 * renderer.bounds.extents.x), placed.transform.position.y, placed.transform.position.z - (2 * renderer.bounds.extents.x));
@@ -69,8 +85,12 @@ public class CourseCreator : MonoBehaviour {
                 {
                     nextPos = new Vector3(renderer.transform.position.x + (2 * renderer.bounds.extents.x), renderer.transform.position.y, renderer.transform.position.z);
                 }
-                m_course.Add(GameObject.Instantiate(m_blockTypesRight[Random.Range(0, m_blockTypesRight.Count)], nextPos, Quaternion.identity) as GameObject);
-                //GameObject placed = m_course[m_course.Count - 1];
+				if (courseEnd) {
+					m_course.Add(GameObject.Instantiate(m_blockTypesRightEnd[0], nextPos, Quaternion.identity) as GameObject);
+				} else {
+                	m_course.Add(GameObject.Instantiate(m_blockTypesRight[Random.Range(0, m_blockTypesRight.Count)], nextPos, Quaternion.identity) as GameObject);
+				}
+					//GameObject placed = m_course[m_course.Count - 1];
             }
         }
 
