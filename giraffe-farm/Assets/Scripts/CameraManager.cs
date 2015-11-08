@@ -10,7 +10,9 @@ public class CameraManager : MonoBehaviour {
 	}
 	
 	void Update () {
-        if (m_ball == null)
+		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted) return;
+        
+		if (m_ball == null)
         {
             m_ball = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         }

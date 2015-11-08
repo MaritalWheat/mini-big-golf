@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour {
 	private static UIManager Instance;
 
 	public Text m_hitCounter;
+	public Button m_startGameButton;
 	
 	void Start () {
 		if (Instance == null) {
@@ -16,5 +17,9 @@ public class UIManager : MonoBehaviour {
 
 	public static void UpdateHits(int newHitCount) {
 		Instance.m_hitCounter.text = "Hits: " + newHitCount;
+	}
+
+	public static void StartGame() {
+		Instance.m_startGameButton.gameObject.SetActive (false);
 	}
 }

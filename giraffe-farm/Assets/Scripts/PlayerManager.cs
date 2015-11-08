@@ -18,6 +18,8 @@ public class PlayerManager : MonoBehaviour {
     }
 	
 	void Update () {
+		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted) return;
+
 	    if (m_startMarker == null)
         {
             m_startMarker = GameObject.Find("Start Marker");

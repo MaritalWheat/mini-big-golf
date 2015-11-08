@@ -22,6 +22,8 @@ public class SwingHandler : MonoBehaviour {
 	}
 	
 	void Update () {
+		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted) return;
+
         if (m_ballRigidBody == null)
         {
 			GameObject ball = GameObject.FindGameObjectWithTag("Player");
