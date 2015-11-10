@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour {
 
 	public Text m_hitCounter;
 	public Button m_startGameButton;
+	public GameObject m_postCourseStats;
 	
 	void Start () {
 		if (Instance == null) {
@@ -21,5 +22,10 @@ public class UIManager : MonoBehaviour {
 
 	public static void StartGame() {
 		Instance.m_startGameButton.gameObject.SetActive (false);
+	}
+
+	public static void PostGame() {
+		Instance.m_hitCounter.gameObject.SetActive (false);
+		Instance.m_postCourseStats.gameObject.SetActive (true);
 	}
 }

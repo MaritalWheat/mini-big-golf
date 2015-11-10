@@ -8,8 +8,12 @@ public class HoleDrop : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Player") {
 			holeCoverMesh.enabled = false;
-			//Debug.Log ("Game Over");
-			//PlayerManager.Reset();
+			Debug.Log("Game Over!");
+			Invoke("FinishCourse", 2.0f);
 		}
+	}
+
+	void FinishCourse() {
+		UIManager.PostGame ();
 	}
 }
