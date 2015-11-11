@@ -23,6 +23,10 @@ public class CourseCreator : MonoBehaviour {
     private Direction m_currentDirection = Direction.Forward;
     
 	void Start () {
+		//MASSIVELY important - "map a day" concept will be fueled by server sending all clients the same seed, or
+		//friend can exchange a seed value (opaquely), or leaderboards can be seed based
+		Random.seed = 12345;
+
         m_course.Add(GameObject.Instantiate(m_blockTypesForward[0], Vector3.zero, Quaternion.identity) as GameObject);
         for (int i = 0; i < 6; i++)
         {
