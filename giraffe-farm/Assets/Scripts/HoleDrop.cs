@@ -14,6 +14,6 @@ public class HoleDrop : MonoBehaviour {
 	}
 
 	void FinishCourse() {
-		UIManager.PostGame ();
+		GameManager.EndGame ();
 	}
 }

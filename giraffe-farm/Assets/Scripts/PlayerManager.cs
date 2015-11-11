@@ -10,6 +10,10 @@ public class PlayerManager : MonoBehaviour {
 
 	private int m_hits;
 
+	public static int Hits {
+		get { return Instance.m_hits; }
+	}
+
 	void Start () {
        if (Instance == null) {
 			Instance = this;
