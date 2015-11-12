@@ -19,11 +19,9 @@ public class CameraManager : MonoBehaviour {
 	
 	void Update () {
 		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted) {
-			//Camera.main.transform.RotateAround(m_courseCenter, Vector3.up, 4.0f * Time.deltaTime);
-			//Camera.main.transform.position = new Vector3(Camera.main.transform.position.x - 0.5f * Time.deltaTime, Camera.main.transform.position.y, Camera.main.transform.position.z);
-
 			Camera.main.transform.RotateAround (m_courseCenter, Vector3.up, 4.0f * Time.deltaTime);
 			Vector3 desiredPosition = (Camera.main.transform.position - m_courseCenter).normalized * m_radius + m_courseCenter;
+
 			if (Mathf.Approximately(Camera.main.transform.position.x - desiredPosition.x, 0.0f)) {
 				if (m_radius == m_radiusMin) {
 					m_radius = m_radiusMax;
@@ -31,10 +29,10 @@ public class CameraManager : MonoBehaviour {
 					m_radius = m_radiusMin;
 				}
 			}
+
 			Camera.main.transform.position = Vector3.MoveTowards(Camera.main.transform.position, desiredPosition, Time.deltaTime * m_radiusSpeed);   
 			Camera.main.transform.LookAt (m_courseCenter);
 		} else {
-        
 			if (m_ball == null) {
 				m_ball = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
 			} else {
