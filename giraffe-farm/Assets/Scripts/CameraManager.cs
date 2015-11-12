@@ -45,7 +45,7 @@ public class CameraManager : MonoBehaviour {
 	public static void SetCameraPreGamePosition() {
 		Vector3 courseCenter = CourseCreator.Course [CourseCreator.Course.Count / 2].transform.position;
 		Camera.main.transform.position = new Vector3 (courseCenter.x - 8.0f, courseCenter.y + 6.0f, courseCenter.z);
-		Camera.main.transform.LookAt (new Vector3(courseCenter.x, courseCenter.y - 2.0f, courseCenter.z));
+		Camera.main.transform.LookAt (courseCenter);
 
 		Instance.m_courseCenter = courseCenter;
 	}
