@@ -4,13 +4,17 @@ using System.Collections.Generic;
 
 public class CourseCreator : MonoBehaviour {
 
+	public static CourseCreator Instance;
+
     public List<GameObject> m_blockTypesForward = new List<GameObject>();
     public List<GameObject> m_blockTypesLeft = new List<GameObject>();
     public List<GameObject> m_blockTypesRight = new List<GameObject>();
 	public List<GameObject> m_blockTypesForwardEnd = new List<GameObject> ();
 	public List<GameObject> m_blockTypesLeftEnd = new List<GameObject> ();
 	public List<GameObject> m_blockTypesRightEnd = new List<GameObject> ();
-    public List<GameObject> m_course = new List<GameObject>();
+    private List<GameObject> m_course = new List<GameObject>();
+
+	public static List<GameObject> Course { get { return Instance.m_course; } }
 
     private enum Direction
     {
@@ -23,84 +27,94 @@ public class CourseCreator : MonoBehaviour {
     private Direction m_currentDirection = Direction.Forward;
     
 	void Start () {
+		if (Instance == null) {
+			Instance = this;
+		}
+    }
+	
+	void Update () {
+		if (Course.Count == 0) {
+			GenerateCourse ();
+		}
+	}
+
+	private void GenerateCourse() {
 		//MASSIVELY important - "map a day" concept will be fueled by server sending all clients the same seed, or
 		//friend can exchange a seed value (opaquely), or leaderboards can be seed based
 		Random.seed = 12345;
-
-        m_course.Add(GameObject.Instantiate(m_blockTypesForward[0], Vector3.zero, Quaternion.identity) as GameObject);
-        for (int i = 0; i < 6; i++)
-        {
+		
+		m_course.Add(GameObject.Instantiate(m_blockTypesForward[0], Vector3.zero, Quaternion.identity) as GameObject);
+		for (int i = 0; i < 12; i++)
+		{
 			bool courseEnd = false;
-			if (i == 5) {
+			if (i == 11) {
 				courseEnd = true;
 			}
-            GameObject lastBlock = m_course[m_course.Count - 1];
-            if (lastBlock.name.Contains("left"))
-            {
-                m_currentDirection = Direction.Left;
-            } else if (lastBlock.name.Contains("forward"))
-            {
-                m_currentDirection = Direction.Forward;
-            } else if (lastBlock.name.Contains("right"))
-            {
-                m_currentDirection = Direction.Right;
-            }
-
-            if (m_currentDirection == Direction.Forward)
-            {
-                Renderer renderer = lastBlock.GetComponentInChildren<Renderer>();
-                Vector3 nextPos = Vector3.zero;
-                if (lastBlock.name.Contains("corner") && !lastBlock.name.Contains("right") && !lastBlock.name.Contains("r_forward"))
-                {
-                    nextPos = new Vector3(renderer.transform.position.x, renderer.transform.position.y, renderer.transform.position.z + (4 * renderer.bounds.extents.z));
-                }
-                else
-                {
-                    nextPos = new Vector3(renderer.transform.position.x, renderer.transform.position.y, renderer.transform.position.z + (2 * renderer.bounds.extents.z));
-                }
-
+			GameObject lastBlock = m_course[m_course.Count - 1];
+			if (lastBlock.name.Contains("left"))
+			{
+				m_currentDirection = Direction.Left;
+			} else if (lastBlock.name.Contains("forward"))
+			{
+				m_currentDirection = Direction.Forward;
+			} else if (lastBlock.name.Contains("right"))
+			{
+				m_currentDirection = Direction.Right;
+			}
+			
+			if (m_currentDirection == Direction.Forward)
+			{
+				Renderer renderer = lastBlock.GetComponentInChildren<Renderer>();
+				Vector3 nextPos = Vector3.zero;
+				if (lastBlock.name.Contains("corner") && !lastBlock.name.Contains("right") && !lastBlock.name.Contains("r_forward"))
+				{
+					nextPos = new Vector3(renderer.transform.position.x, renderer.transform.position.y, renderer.transform.position.z + (4 * renderer.bounds.extents.z));
+				}
+				else
+				{
+					nextPos = new Vector3(renderer.transform.position.x, renderer.transform.position.y, renderer.transform.position.z + (2 * renderer.bounds.extents.z));
+				}
+				
 				if (courseEnd) {
 					m_course.Add(GameObject.Instantiate(m_blockTypesForwardEnd[0], nextPos, Quaternion.identity) as GameObject);
 				} else {
-                	m_course.Add(GameObject.Instantiate(m_blockTypesForward[Random.Range(1, m_blockTypesForward.Count)], nextPos, Quaternion.identity) as GameObject);
+					m_course.Add(GameObject.Instantiate(m_blockTypesForward[Random.Range(1, m_blockTypesForward.Count)], nextPos, Quaternion.identity) as GameObject);
 				}
-            } else if (m_currentDirection == Direction.Left) {
-                Renderer renderer = lastBlock.GetComponentInChildren<Renderer>();
-                Vector3 nextPos = new Vector3(renderer.transform.position.x - (2 * renderer.bounds.extents.x), renderer.transform.position.y, renderer.transform.position.z);
+			} else if (m_currentDirection == Direction.Left) {
+				Renderer renderer = lastBlock.GetComponentInChildren<Renderer>();
+				Vector3 nextPos = new Vector3(renderer.transform.position.x - (2 * renderer.bounds.extents.x), renderer.transform.position.y, renderer.transform.position.z);
 				if (courseEnd) {
 					m_course.Add(GameObject.Instantiate(m_blockTypesLeftEnd[0], nextPos, Quaternion.identity) as GameObject);
 				} else {	
 					m_course.Add(GameObject.Instantiate(m_blockTypesLeft[Random.Range(0, m_blockTypesLeft.Count)], nextPos, Quaternion.identity) as GameObject);
 				}
 				GameObject placed = m_course[m_course.Count - 1];
-                if (placed.name.Contains("corner"))
-                {
-                    placed.transform.position = new Vector3(placed.transform.position.x + (2 * renderer.bounds.extents.x), placed.transform.position.y, placed.transform.position.z - (2 * renderer.bounds.extents.x));
-                }
-            } else if (m_currentDirection == Direction.Right)
-            {
-                Renderer renderer = lastBlock.GetComponentInChildren<Renderer>();
-                Vector3 nextPos = Vector3.zero;
-                if (lastBlock.name.Contains("corner"))
-                {
-                    nextPos = new Vector3(renderer.transform.position.x + (4 * renderer.bounds.extents.x), renderer.transform.position.y, renderer.transform.position.z);
-                }
-                else
-                {
-                    nextPos = new Vector3(renderer.transform.position.x + (2 * renderer.bounds.extents.x), renderer.transform.position.y, renderer.transform.position.z);
-                }
+				if (placed.name.Contains("corner"))
+				{
+					placed.transform.position = new Vector3(placed.transform.position.x + (2 * renderer.bounds.extents.x), placed.transform.position.y, placed.transform.position.z - (2 * renderer.bounds.extents.x));
+				}
+			} else if (m_currentDirection == Direction.Right)
+			{
+				Renderer renderer = lastBlock.GetComponentInChildren<Renderer>();
+				Vector3 nextPos = Vector3.zero;
+				if (lastBlock.name.Contains("corner"))
+				{
+					nextPos = new Vector3(renderer.transform.position.x + (4 * renderer.bounds.extents.x), renderer.transform.position.y, renderer.transform.position.z);
+				}
+				else
+				{
+					nextPos = new Vector3(renderer.transform.position.x + (2 * renderer.bounds.extents.x), renderer.transform.position.y, renderer.transform.position.z);
+				}
 				if (courseEnd) {
 					m_course.Add(GameObject.Instantiate(m_blockTypesRightEnd[0], nextPos, Quaternion.identity) as GameObject);
 				} else {
-                	m_course.Add(GameObject.Instantiate(m_blockTypesRight[Random.Range(0, m_blockTypesRight.Count)], nextPos, Quaternion.identity) as GameObject);
+					m_course.Add(GameObject.Instantiate(m_blockTypesRight[Random.Range(0, m_blockTypesRight.Count)], nextPos, Quaternion.identity) as GameObject);
 				}
-					//GameObject placed = m_course[m_course.Count - 1];
-            }
-        }
+				//GameObject placed = m_course[m_course.Count - 1];
+			}
 
-    }
-	
-	void Update () {
-	    
+			//IMPORTANT - send the "pre game" camera position signal once the course is completed
+			CameraManager.SetCameraPreGamePosition();
+		}
 	}
 }

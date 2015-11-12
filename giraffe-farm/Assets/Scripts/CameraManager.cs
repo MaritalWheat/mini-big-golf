@@ -3,23 +3,52 @@ using System.Collections;
 
 public class CameraManager : MonoBehaviour {
 
+	private static CameraManager Instance;
     private Transform m_ball;
+	private Vector3 m_courseCenter;
+	private float m_radius = 5.0f;
+	private float m_radiusMax = 20.0f;
+	private float m_radiusMin = 10.0f;
+	private float m_radiusSpeed = 0.5f;
 
 	void Start () {
-	
+		if (Instance == null) {
+			Instance = this;
+		}
 	}
 	
 	void Update () {
-		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted) return;
+		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted) {
+			//Camera.main.transform.RotateAround(m_courseCenter, Vector3.up, 4.0f * Time.deltaTime);
+			//Camera.main.transform.position = new Vector3(Camera.main.transform.position.x - 0.5f * Time.deltaTime, Camera.main.transform.position.y, Camera.main.transform.position.z);
+
+			Camera.main.transform.RotateAround (m_courseCenter, Vector3.up, 4.0f * Time.deltaTime);
+			Vector3 desiredPosition = (Camera.main.transform.position - m_courseCenter).normalized * m_radius + m_courseCenter;
+			if (Mathf.Approximately(Camera.main.transform.position.x - desiredPosition.x, 0.0f)) {
+				if (m_radius == m_radiusMin) {
+					m_radius = m_radiusMax;
+				} else {
+					m_radius = m_radiusMin;
+				}
+			}
+			Camera.main.transform.position = Vector3.MoveTowards(Camera.main.transform.position, desiredPosition, Time.deltaTime * m_radiusSpeed);   
+			Camera.main.transform.LookAt (m_courseCenter);
+		} else {
         
-		if (m_ball == null)
-        {
-            m_ball = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        }
-        else
-        {
-            Camera.main.transform.position = new Vector3(m_ball.position.x, m_ball.position.y + 2.0f, m_ball.position.z - 5.0f);
-            Camera.main.transform.LookAt(m_ball);
-        }
+			if (m_ball == null) {
+				m_ball = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
+			} else {
+				Camera.main.transform.position = new Vector3 (m_ball.position.x, m_ball.position.y + 2.0f, m_ball.position.z - 5.0f);
+				Camera.main.transform.LookAt (m_ball);
+			}
+		}
     }
+
+	public static void SetCameraPreGamePosition() {
+		Vector3 courseCenter = CourseCreator.Course [CourseCreator.Course.Count / 2].transform.position;
+		Camera.main.transform.position = new Vector3 (courseCenter.x - 8.0f, courseCenter.y + 6.0f, courseCenter.z);
+		Camera.main.transform.LookAt (new Vector3(courseCenter.x, courseCenter.y - 2.0f, courseCenter.z));
+
+		Instance.m_courseCenter = courseCenter;
+	}
 }
