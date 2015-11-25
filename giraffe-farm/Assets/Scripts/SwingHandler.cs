@@ -58,7 +58,9 @@ public class SwingHandler : MonoBehaviour {
 
 	private SwingState SetCurrentSwingState () {
         //Debug.Log("Force: " + m_ballThrust);
-        if (m_currentSwingState == SwingState.Unstarted) {
+		if (GameManager.CurrentGameState == GameManager.GameState.Ended) {
+			return SwingState.Unstarted;
+		} else if (m_currentSwingState == SwingState.Unstarted) {
             if (Input.GetMouseButton(0)) {
                 Debug.Log("Starting swing.");
                 m_swingInputStartPosition = Input.mousePosition;

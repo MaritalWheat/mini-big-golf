@@ -39,6 +39,11 @@ public class PlayerManager : MonoBehaviour {
 		}
 	}
 
+	public void OnResetClick() {
+		PlayerManager.Reset();
+		GameManager.ResetGame ();
+	}
+
 	public static void Reset () {
 		Instance.m_ball.transform.position = Instance.m_startMarker.transform.position;
 		Instance.m_ball.GetComponent<Rigidbody> ().Sleep ();

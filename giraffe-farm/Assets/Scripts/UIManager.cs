@@ -36,4 +36,9 @@ public class UIManager : MonoBehaviour {
 		Instance.m_postGameHitCount.text = "Hits: " + gameStats.GetNumHits ();
 		Instance.m_postGameTimeStat.text = "Time: " + gameStats.GetTimePlayed ();
 	}
+
+	public static void Reset() {
+		Instance.m_hitCounter.gameObject.SetActive (true);
+		Instance.m_postCourseStats.gameObject.SetActive (false);
+	}
 }

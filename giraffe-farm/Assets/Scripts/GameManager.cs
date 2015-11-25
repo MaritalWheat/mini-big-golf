@@ -58,4 +58,11 @@ public class GameManager : MonoBehaviour {
 		float timePlayed = Time.time - Instance.m_gameStartTime;
 		UIManager.PostGame (new GameStats(timePlayed, PlayerManager.Hits));
 	}
+
+	public static void ResetGame() {
+		Instance.m_currentState = GameState.Started;
+		Instance.m_gameStartTime = Time.time;
+
+		UIManager.Reset ();
+	}
 }
