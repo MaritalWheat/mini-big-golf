@@ -52,6 +52,11 @@ public class GameManager : MonoBehaviour {
 		UIManager.StartGame ();
 	}
 
+	//called from UI Pause Button
+	public void PauseGame() {
+
+	}
+
 	public static void EndGame() {
 		Instance.m_currentState = GameState.Ended;
 
