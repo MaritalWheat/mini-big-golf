@@ -43,7 +43,12 @@ public class GameManager : MonoBehaviour {
 		if (Instance == null) {
 			Instance = this;
 			m_currentState = GameState.Unstarted;
+			PreGame();
 		}
+	}
+
+	public void PreGame() {
+		UIManager.PreGame ();
 	}
 
 	//called from UI Start Button
@@ -57,13 +62,18 @@ public class GameManager : MonoBehaviour {
 
 	//called from UI Pause Button
 	public void PauseGame() {
-		m_currentState = GameState.Paused;
-		m_gamePauseStartTime = Time.time;
+		if (m_currentState != GameState.Paused) {
+			m_currentState = GameState.Paused;
+			m_gamePauseStartTime = Time.time;
+		} else {
+			UnpauseGame(); //temporary until menu is created
+		}
 	}
 
 	//called from UI Unpause Button
 	public void UnpauseGame() {
 		m_gamePauseTotalTime += Time.time - m_gamePauseStartTime;
+		m_currentState = GameState.Started;
 	}
 
 	public static void EndGame() {

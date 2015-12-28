@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour {
 	public Text m_postGameTimeStat;
 
 	public Button m_startGameButton;
+	public Button m_pauseGameButton;
 
 	public GameObject m_postCourseStats;
 	
@@ -24,8 +25,15 @@ public class UIManager : MonoBehaviour {
 		Instance.m_hitCounter.text = "Hits: " + newHitCount;
 	}
 
+	public static void PreGame() {
+		Instance.m_hitCounter.gameObject.SetActive (false);
+		Instance.m_pauseGameButton.gameObject.SetActive (false);
+	}
+
 	public static void StartGame() {
 		Instance.m_startGameButton.gameObject.SetActive (false);
+		Instance.m_hitCounter.gameObject.SetActive (true);
+		Instance.m_pauseGameButton.gameObject.SetActive (true);
 	}
 
 	public static void PostGame(GameManager.GameStats gameStats) {
