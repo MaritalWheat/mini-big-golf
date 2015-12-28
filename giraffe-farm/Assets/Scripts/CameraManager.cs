@@ -18,7 +18,8 @@ public class CameraManager : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted) {
+		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted || GameManager.CurrentGameState == 
+		    GameManager.GameState.Paused) {
 			Camera.main.transform.RotateAround (m_courseCenter, Vector3.up, 4.0f * Time.deltaTime);
 			Vector3 desiredPosition = (Camera.main.transform.position - m_courseCenter).normalized * m_radius + m_courseCenter;
 

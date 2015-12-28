@@ -22,7 +22,8 @@ public class SwingHandler : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted) return;
+		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted || GameManager.CurrentGameState ==
+		    GameManager.GameState.Paused) return;
 
         if (m_ballRigidBody == null)
         {
