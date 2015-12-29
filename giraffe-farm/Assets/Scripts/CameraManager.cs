@@ -71,6 +71,8 @@ public class CameraManager : MonoBehaviour {
 
 		yield return new WaitForSeconds (0.75f);
 
+		CourseCreator.GenerateNewCourse ();
+
 		StartCoroutine ("CameraFadeInCoroutine");
 	}
 

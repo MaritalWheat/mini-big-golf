@@ -14,6 +14,8 @@ public class CourseCreator : MonoBehaviour {
 	public List<GameObject> m_blockTypesRightEnd = new List<GameObject> ();
     private List<GameObject> m_course = new List<GameObject>();
 
+	private int m_seed = 12345;
+
 	public static List<GameObject> Course { get { return Instance.m_course; } }
 
     private enum Direction
@@ -36,12 +38,28 @@ public class CourseCreator : MonoBehaviour {
 		if (Course.Count == 0) {
 			GenerateCourse ();
 		}
+
+		if (Input.GetKeyUp (KeyCode.A)) {
+			//this is unsafe and timing not guaranteed, should fix but quick test
+			m_seed++;
+			CameraManager.FadeCamera();
+		}
+	}
+
+	public static void GenerateNewCourse() {
+		foreach (GameObject block in Instance.m_course) {
+			Destroy(block);
+		}
+
+		Instance.m_currentDirection = Direction.Forward;
+		Instance.m_course = new List<GameObject> ();
+		Instance.GenerateCourse ();
 	}
 
 	private void GenerateCourse() {
 		//MASSIVELY important - "map a day" concept will be fueled by server sending all clients the same seed, or
 		//friend can exchange a seed value (opaquely), or leaderboards can be seed based
-		Random.seed = 12345;
+		Random.seed = m_seed;
 		
 		m_course.Add(GameObject.Instantiate(m_blockTypesForward[0], Vector3.zero, Quaternion.identity) as GameObject);
 		for (int i = 0; i < 12; i++)
