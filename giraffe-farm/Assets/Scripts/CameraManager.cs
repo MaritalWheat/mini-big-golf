@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.ImageEffects;
 using System.Collections;
 
 public class CameraManager : MonoBehaviour {
@@ -50,4 +51,38 @@ public class CameraManager : MonoBehaviour {
 
 		Instance.m_courseCenter = courseCenter;
 	}
+
+	public static void FadeCameraOnLaunch() {
+		Instance.StartCoroutine ("CameraFadeInCoroutine");
+	}
+
+	public static void FadeCamera() {
+		Instance.StartCoroutine ("CameraFadeOutCoroutine");
+	}
+
+	IEnumerator CameraFadeOutCoroutine () {
+		VignetteAndChromaticAberration vignette = Camera.main.gameObject.GetComponent<VignetteAndChromaticAberration> ();
+		float t = 0.0f;
+		while(t < 1.01f) {
+			vignette.intensity = Mathf.Lerp(0.0f, 1.0f, t / 1.0f);
+			t += 0.5f * Time.deltaTime;
+			yield return null;
+		}	
+
+		yield return new WaitForSeconds (0.75f);
+
+		StartCoroutine ("CameraFadeInCoroutine");
+	}
+
+	IEnumerator CameraFadeInCoroutine () {
+		VignetteAndChromaticAberration vignette = Camera.main.gameObject.GetComponent<VignetteAndChromaticAberration> ();
+		float t = 0.0f;
+		while(t < 1.01f) {
+			vignette.intensity = Mathf.Lerp(1.0f, 0.0f, t / 1.0f);
+			t += 0.5f * Time.deltaTime;
+			yield return null;
+		}	
+	}
+
+
 }

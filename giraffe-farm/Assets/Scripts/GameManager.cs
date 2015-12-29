@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour {
 			Instance = this;
 			m_currentState = GameState.Unstarted;
 			PreGame();
+			CameraManager.FadeCameraOnLaunch ();
 		}
 	}
 
