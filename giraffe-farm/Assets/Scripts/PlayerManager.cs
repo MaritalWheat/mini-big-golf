@@ -9,6 +9,9 @@ public class PlayerManager : MonoBehaviour {
 	private GameObject m_ball;
 
 	private int m_hits;
+	private Vector3 m_savedVelocity;
+	private Vector3 m_savedAngularVelocity;
+
 
 	public static int Hits {
 		get { return Instance.m_hits; }
@@ -38,6 +41,20 @@ public class PlayerManager : MonoBehaviour {
 				m_ball.GetComponent<Rigidbody> ().WakeUp ();
 			}
 		}
+	}
+
+	public static void Pause() {
+		Rigidbody rigidbody = Instance.m_ball.GetComponent<Rigidbody> ();
+		Instance.m_savedVelocity = rigidbody.velocity;
+		Instance.m_savedAngularVelocity = rigidbody.angularVelocity;
+		rigidbody.isKinematic = true;
+	}
+
+	public static void UnPause() {
+		Rigidbody rigidbody = Instance.m_ball.GetComponent<Rigidbody> ();
+		rigidbody.velocity = Instance.m_savedVelocity;
+		rigidbody.angularVelocity = Instance.m_savedAngularVelocity;
+		rigidbody.isKinematic = false;
 	}
 
 	public void OnResetClick() {

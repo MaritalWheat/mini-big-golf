@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour {
 		if (m_currentState != GameState.Paused) {
 			m_currentState = GameState.Paused;
 			m_gamePauseStartTime = Time.time;
+			PlayerManager.Pause();
 		} else {
 			UnpauseGame(); //temporary until menu is created
 		}
@@ -74,6 +75,7 @@ public class GameManager : MonoBehaviour {
 	public void UnpauseGame() {
 		m_gamePauseTotalTime += Time.time - m_gamePauseStartTime;
 		m_currentState = GameState.Started;
+		PlayerManager.UnPause ();
 	}
 
 	public static void EndGame() {
