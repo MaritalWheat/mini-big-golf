@@ -12,7 +12,12 @@ public class CameraManager : MonoBehaviour {
 	private float m_radiusMax = 20.0f;
 	private float m_radiusMin = 10.0f;
 	private float m_radiusSpeed = 0.5f;
-	private Vector3 m_desiredCamPos = Vector3.zero;
+	private bool m_initialGameStart;
+	private bool m_gameCameraPositioned;
+
+	public static bool GameCameraPositioned { get { return Instance.m_gameCameraPositioned; } }
+
+	[SerializeField] private UnityStandardAssets.Cameras.AutoCam m_autoCamInstance;
 
 	void Start () {
 		if (Instance == null) {
@@ -20,13 +25,13 @@ public class CameraManager : MonoBehaviour {
 		}
 	}
 	
-	void Update () {
+	void FixedUpdate () {
 		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted || GameManager.CurrentGameState == 
-		    GameManager.GameState.Paused) {
-			Camera.main.transform.RotateAround (m_courseCenter, Vector3.up, 4.0f * Time.deltaTime);
-			Vector3 desiredPosition = (Camera.main.transform.position - m_courseCenter).normalized * m_radius + m_courseCenter;
+			GameManager.GameState.Paused) {
+			m_autoCamInstance.transform.RotateAround (m_courseCenter, Vector3.up, 4.0f * Time.deltaTime);
+			Vector3 desiredPosition = (m_autoCamInstance.transform.position - m_courseCenter).normalized * m_radius + m_courseCenter;
 
-			if (Mathf.Approximately(Camera.main.transform.position.x - desiredPosition.x, 0.0f)) {
+			if (Mathf.Approximately (Camera.main.transform.position.x - desiredPosition.x, 0.0f)) {
 				if (m_radius == m_radiusMin) {
 					m_radius = m_radiusMax;
 				} else {
@@ -34,35 +39,27 @@ public class CameraManager : MonoBehaviour {
 				}
 			}
 
-			Camera.main.transform.position = Vector3.MoveTowards(Camera.main.transform.position, desiredPosition, Time.deltaTime * m_radiusSpeed);   
-			Camera.main.transform.LookAt (m_courseCenter);
+			Instance.m_autoCamInstance.transform.position = Vector3.MoveTowards (m_autoCamInstance.transform.position, desiredPosition, Time.deltaTime * m_radiusSpeed);   
+			Instance.m_autoCamInstance.transform.LookAt (m_courseCenter);
 		} else {
-			if (m_ball == null) {
-				m_ball = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
-				m_cameraMarker = GameObject.FindGameObjectWithTag ("CameraMarker").GetComponent<Transform> ();
-			} else {
-				Camera.main.transform.position = new Vector3 (m_ball.position.x, m_ball.position.y + 2.0f, m_ball.position.z - 5.0f);
-				/*
-				Vector3 velocity = m_ball.GetComponent<Rigidbody>().velocity;
-
-				if (velocity.magnitude > 1.0f) {
-					velocity = velocity.normalized;
-					m_cameraMarker.position = new Vector3 (m_ball.position.x - (3.0f * velocity.x), m_ball.position.y + 2.0f, m_ball.position.z - (3.0f * velocity.z));
-					m_desiredCamPos = new Vector3 (m_cameraMarker.position.x, m_cameraMarker.position.y, m_cameraMarker.position.z);
-				}
-				Camera.main.transform.position = Vector3.MoveTowards(Camera.main.transform.position, m_desiredCamPos, Time.deltaTime * 3.0f);   
-				*/
-				Camera.main.transform.LookAt (m_ball);
-			}
+			m_autoCamInstance.ManualUpdate(false);
 		}
     }
 
 	public static void SetCameraPreGamePosition() {
 		Vector3 courseCenter = CourseCreator.Course [CourseCreator.Course.Count / 2].transform.position;
-		Camera.main.transform.position = new Vector3 (courseCenter.x - 8.0f, courseCenter.y + 6.0f, courseCenter.z);
-		Camera.main.transform.LookAt (courseCenter);
+		Instance.m_autoCamInstance.transform.position = new Vector3 (courseCenter.x - 8.0f, courseCenter.y + 6.0f, courseCenter.z);
+		Instance.m_autoCamInstance.transform.LookAt (courseCenter);
 
 		Instance.m_courseCenter = courseCenter;
+	}
+
+	public static void SetGameCameraAsPositioned() {
+		Instance.m_gameCameraPositioned = true;
+	}
+
+	public static void Reset() {
+		Instance.m_gameCameraPositioned = false;
 	}
 
 	public static void FadeCameraOnLaunch() {
@@ -98,6 +95,4 @@ public class CameraManager : MonoBehaviour {
 			yield return null;
 		}	
 	}
-
-
 }

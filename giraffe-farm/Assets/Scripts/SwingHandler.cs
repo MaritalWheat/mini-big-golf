@@ -16,6 +16,9 @@ public class SwingHandler : MonoBehaviour {
     private Vector3 m_swingInputEndPosition;
     private Vector3 m_swingInputDirection;
     private float m_swingTime;
+	private Vector3 m_move; // the world-relative desired move direction, calculated from the camForward and user input.
+	private Transform m_cam; // A reference to the main camera in the scenes transform
+	private Vector3 m_camForward; // The current forward direction of the camera
 
 	void Start () {
 		m_currentSwingState = SwingState.Unstarted;
@@ -28,35 +31,37 @@ public class SwingHandler : MonoBehaviour {
 			return;
 		}
 
-        if (m_ballRigidBody == null)
-        {
-			GameObject ball = GameObject.FindGameObjectWithTag("Player");
-			if (ball != null) {
-            	m_ballRigidBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
-			}
-        }
-        else
-        {
-            m_currentSwingState = SetCurrentSwingState();
-        }
+		if (m_cam == null && Camera.main != null)
+		{
+			m_cam = Camera.main.transform;
+		}
 
-        
+        if (m_ballRigidBody == null) {
+			GameObject ball = GameObject.FindGameObjectWithTag ("Player");
+			if (ball != null) {
+				m_ballRigidBody = GameObject.FindGameObjectWithTag ("Player").GetComponent<Rigidbody> ();
+			}
+		} else {
+			m_currentSwingState = SetCurrentSwingState ();
+		}
 	}
 
     void FixedUpdate()
     {
+		if (m_cam == null || m_ballRigidBody == null)
+			return;
+
         if (m_currentSwingState == SwingState.Ended)
         {
             Debug.Log("Performing swing.");
             float velocity = Vector3.Distance(m_swingInputStartPosition, m_swingInputEndPosition) / m_swingTime;
-            Debug.Log("Acceleration: " + velocity);
-            m_ballRigidBody.AddForce(Vector3.Normalize(m_swingInputDirection) * velocity);
+            //Debug.Log("Acceleration: " + velocity);
+            
+			m_camForward = Vector3.Scale(m_cam.forward, new Vector3(1, 0, 1)).normalized;
+			m_move = (m_swingInputDirection.z * m_camForward + m_swingInputDirection.x * m_cam.right).normalized;
+			m_ballRigidBody.AddForce(m_move * velocity);
             m_currentSwingState = SwingState.Unstarted;
 			PlayerManager.IncrementHits();
-        }
-        else
-        {
-
         }
     }
 

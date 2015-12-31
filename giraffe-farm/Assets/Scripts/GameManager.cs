@@ -92,5 +92,6 @@ public class GameManager : MonoBehaviour {
 		Instance.m_gamePauseTotalTime = 0.0f;
 
 		UIManager.Reset ();
+		CameraManager.Reset ();
 	}
 }

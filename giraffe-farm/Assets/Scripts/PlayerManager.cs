@@ -68,7 +68,11 @@ public class PlayerManager : MonoBehaviour {
 
 	public static void Reset () {
 		Instance.m_ball.transform.position = Instance.m_startMarker.transform.position;
-		Instance.m_ball.GetComponent<Rigidbody> ().Sleep ();
+		Instance.m_ball.transform.rotation = Quaternion.identity;
+		Rigidbody rigidbody = Instance.m_ball.GetComponent<Rigidbody> ();
+		rigidbody.Sleep ();
+		rigidbody.velocity = Vector3.zero;
+
 		Instance.ResetHits ();
 	}
 
