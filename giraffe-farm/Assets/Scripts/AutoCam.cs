@@ -19,7 +19,7 @@ namespace UnityStandardAssets.Cameras
         private float m_TurnSpeedVelocityChange; // The change in the turn speed velocity
         private Vector3 m_RollUp = Vector3.up;// The roll of the camera around the z axis ( generally this will always just be up )
 
-        protected override void FollowTarget(float deltaTime, bool initialRun)
+        protected override void FollowTarget(float deltaTime)
         {
             // if no target, or no time passed then we quit early, as there is nothing to do
             if (!(deltaTime > 0) || m_Target == null)
@@ -35,19 +35,17 @@ namespace UnityStandardAssets.Cameras
 				// in follow velocity mode, the camera's rotation is aligned towards the object's velocity direction
 				// but only if the object is traveling faster than a given threshold.
 
-				if (!initialRun) {
-					// velocity is high enough, so we'll use the target's velocty
-					if (CameraManager.GameCameraPositioned) {
-						targetForward = targetRigidbody.velocity.normalized;
-					} else if (!Mathf.Approximately(targetRigidbody.velocity.magnitude, 0.0f) && !CameraManager.GameCameraPositioned) {
-						targetForward = targetRigidbody.velocity.normalized;
-						CameraManager.SetGameCameraAsPositioned();
-					} 
 
-					targetUp = Vector3.up;
-				} else {
-					targetUp = Vector3.up;
-				}
+				// velocity is high enough, so we'll use the target's velocty
+				if (CameraManager.GameCameraPositioned) {
+					targetForward = targetRigidbody.velocity.normalized;
+				} else if (!Mathf.Approximately(targetRigidbody.velocity.magnitude, 0.0f) && !CameraManager.GameCameraPositioned) {
+					targetForward = targetRigidbody.velocity.normalized;
+					CameraManager.SetGameCameraAsPositioned();
+				} 
+
+				targetUp = Vector3.up;
+
 				m_CurrentTurnAmount = Mathf.SmoothDamp (m_CurrentTurnAmount, 1, ref m_TurnSpeedVelocityChange, m_SmoothTurnTime);
 			} else {
 				FindAndTargetPlayer();

@@ -42,7 +42,7 @@ public class CameraManager : MonoBehaviour {
 			Instance.m_autoCamInstance.transform.position = Vector3.MoveTowards (m_autoCamInstance.transform.position, desiredPosition, Time.deltaTime * m_radiusSpeed);   
 			Instance.m_autoCamInstance.transform.LookAt (m_courseCenter);
 		} else {
-			m_autoCamInstance.ManualUpdate(false);
+			m_autoCamInstance.ManualUpdate();
 		}
     }
 

@@ -22,17 +22,17 @@ namespace UnityStandardAssets.Cameras
             
         }
 
-        public void ManualUpdate(bool initialRun)
+        public void ManualUpdate()
         {
             if (m_AutoTargetPlayer && (m_Target == null || !m_Target.gameObject.activeSelf))
             {
                 FindAndTargetPlayer();
             }
             
-			FollowTarget(Time.deltaTime, initialRun);
+			FollowTarget(Time.deltaTime);
         }
 
-        protected abstract void FollowTarget(float deltaTime, bool initialRun);
+        protected abstract void FollowTarget(float deltaTime);
 
 
         public void FindAndTargetPlayer()
