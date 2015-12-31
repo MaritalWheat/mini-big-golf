@@ -38,12 +38,20 @@ public class CourseCreator : MonoBehaviour {
 		if (Course.Count == 0) {
 			GenerateCourse ();
 		}
+	}
 
-		if (Input.GetKeyUp (KeyCode.A)) {
-			//this is unsafe and timing not guaranteed, should fix but quick test
-			m_seed++;
-			CameraManager.FadeCamera();
-		}
+	//called from UI next button
+	public void GenerateNextCourse() {
+		//this is unsafe and timing not guaranteed, should fix but quick test
+		m_seed++;
+		CameraManager.FadeCamera();
+	}
+
+	//called from UI previous button
+	public void GeneratePreviousCourse() {
+		//this is unsafe and timing not guaranteed, should fix but quick test
+		m_seed--;
+		CameraManager.FadeCamera();
 	}
 
 	public static void GenerateNewCourse() {

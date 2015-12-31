@@ -6,11 +6,13 @@ public class CameraManager : MonoBehaviour {
 
 	private static CameraManager Instance;
     private Transform m_ball;
+	private Transform m_cameraMarker;
 	private Vector3 m_courseCenter;
 	private float m_radius = 5.0f;
 	private float m_radiusMax = 20.0f;
 	private float m_radiusMin = 10.0f;
 	private float m_radiusSpeed = 0.5f;
+	private Vector3 m_desiredCamPos = Vector3.zero;
 
 	void Start () {
 		if (Instance == null) {
@@ -37,8 +39,19 @@ public class CameraManager : MonoBehaviour {
 		} else {
 			if (m_ball == null) {
 				m_ball = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
+				m_cameraMarker = GameObject.FindGameObjectWithTag ("CameraMarker").GetComponent<Transform> ();
 			} else {
 				Camera.main.transform.position = new Vector3 (m_ball.position.x, m_ball.position.y + 2.0f, m_ball.position.z - 5.0f);
+				/*
+				Vector3 velocity = m_ball.GetComponent<Rigidbody>().velocity;
+
+				if (velocity.magnitude > 1.0f) {
+					velocity = velocity.normalized;
+					m_cameraMarker.position = new Vector3 (m_ball.position.x - (3.0f * velocity.x), m_ball.position.y + 2.0f, m_ball.position.z - (3.0f * velocity.z));
+					m_desiredCamPos = new Vector3 (m_cameraMarker.position.x, m_cameraMarker.position.y, m_cameraMarker.position.z);
+				}
+				Camera.main.transform.position = Vector3.MoveTowards(Camera.main.transform.position, m_desiredCamPos, Time.deltaTime * 3.0f);   
+				*/
 				Camera.main.transform.LookAt (m_ball);
 			}
 		}

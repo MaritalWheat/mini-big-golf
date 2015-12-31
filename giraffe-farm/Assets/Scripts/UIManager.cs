@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour {
 	public Text m_hitCounter;
 	public Text m_postGameHitCount;
 	public Text m_postGameTimeStat;
+	public Text m_title;
 
 	public Button m_startGameButton;
 	public Button m_pauseGameButton;
@@ -32,6 +33,7 @@ public class UIManager : MonoBehaviour {
 
 	public static void StartGame() {
 		Instance.m_startGameButton.gameObject.SetActive (false);
+		Instance.m_title.gameObject.SetActive (false);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_pauseGameButton.gameObject.SetActive (true);
 	}

@@ -37,8 +37,12 @@ public class PlayerManager : MonoBehaviour {
         }
 
 		if (m_ball != null) {
-			if (m_ball.GetComponent<Rigidbody> ().IsSleeping ()) {
-				m_ball.GetComponent<Rigidbody> ().WakeUp ();
+			Rigidbody rigidbody = m_ball.GetComponent<Rigidbody>();
+			if (rigidbody.IsSleeping ()) {
+				rigidbody.WakeUp ();
+			}
+			if (rigidbody.velocity.magnitude < 0.15f) {
+				rigidbody.Sleep();
 			}
 		}
 	}
