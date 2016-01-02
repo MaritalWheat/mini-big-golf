@@ -19,11 +19,9 @@ namespace UnityStandardAssets.Cameras
         private float m_TurnSpeedVelocityChange; // The change in the turn speed velocity
         private Vector3 m_RollUp = Vector3.up;// The roll of the camera around the z axis ( generally this will always just be up )
 
-        protected override void FollowTarget(float deltaTime)
-        {
+        protected override void FollowTarget(float deltaTime) {
             // if no target, or no time passed then we quit early, as there is nothing to do
-            if (!(deltaTime > 0) || m_Target == null)
-            {
+            if (!(deltaTime > 0) || m_Target == null) {
                 return;
             }
 
@@ -58,8 +56,7 @@ namespace UnityStandardAssets.Cameras
             // rotating towards the target's forward direction (which encompasses its 'yaw' and 'pitch')
 
             targetForward.y = 0;
-            if (targetForward.sqrMagnitude < float.Epsilon)
-            {
+            if (targetForward.sqrMagnitude < float.Epsilon) {
                 targetForward = transform.forward;
             }
 
