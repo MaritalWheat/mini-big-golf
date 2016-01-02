@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour {
 	public Button m_pauseGameButton;
 
 	public GameObject m_postCourseStats;
+	public GameObject m_cameraNavigatorAnchor;
 	
 	void Start () {
 		if (Instance == null) {
@@ -29,17 +30,20 @@ public class UIManager : MonoBehaviour {
 	public static void PreGame() {
 		Instance.m_hitCounter.gameObject.SetActive (false);
 		Instance.m_pauseGameButton.gameObject.SetActive (false);
+		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
 	}
 
 	public static void StartGame() {
 		Instance.m_startGameButton.gameObject.SetActive (false);
 		Instance.m_title.gameObject.SetActive (false);
+		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_pauseGameButton.gameObject.SetActive (true);
 	}
 
 	public static void PostGame(GameManager.GameStats gameStats) {
 		Instance.m_hitCounter.gameObject.SetActive (false);
+		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
 		Instance.m_postCourseStats.gameObject.SetActive (true);
 
 		//set stats
@@ -48,7 +52,8 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public static void Reset() {
-		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_postCourseStats.gameObject.SetActive (false);
+		Instance.m_hitCounter.gameObject.SetActive (true);
+		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
 	}
 }

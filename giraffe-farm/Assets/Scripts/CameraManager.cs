@@ -5,7 +5,6 @@ using System.Collections;
 public class CameraManager : MonoBehaviour {
 
 	private static CameraManager Instance;
-    private Transform m_ball;
 	private Transform m_cameraMarker;
 	private Vector3 m_courseCenter;
 	private float m_radius = 5.0f;
@@ -41,10 +40,21 @@ public class CameraManager : MonoBehaviour {
 
 			Instance.m_autoCamInstance.transform.position = Vector3.MoveTowards (m_autoCamInstance.transform.position, desiredPosition, Time.deltaTime * m_radiusSpeed);   
 			Instance.m_autoCamInstance.transform.LookAt (m_courseCenter);
+		} else if (Input.GetKey (KeyCode.Q)) {
+			m_autoCamInstance.transform.RotateAround (GameObject.FindGameObjectWithTag("Player").transform.position, Vector3.up, 4.0f * Time.deltaTime);
 		} else {
 			m_autoCamInstance.ManualUpdate();
 		}
     }
+
+	public static void MoveCameraRight() {
+		Instance.m_autoCamInstance.transform.RotateAround (GameObject.FindGameObjectWithTag("Player").transform.position, Vector3.down, 50.0f * Time.deltaTime);
+	}
+
+	public static void MoveCameraLeft() {
+		Instance.m_autoCamInstance.transform.RotateAround (GameObject.FindGameObjectWithTag("Player").transform.position, Vector3.up, 50.0f * Time.deltaTime);
+
+	}
 
 	public static void SetCameraPreGamePosition() {
 		Vector3 courseCenter = CourseCreator.Course [CourseCreator.Course.Count / 2].transform.position;
