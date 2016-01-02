@@ -28,9 +28,12 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public static void PreGame() {
+		Instance.m_startGameButton.gameObject.SetActive (true);
+		Instance.m_title.gameObject.SetActive (true);
 		Instance.m_hitCounter.gameObject.SetActive (false);
 		Instance.m_pauseGameButton.gameObject.SetActive (false);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
+		Instance.m_postCourseStats.gameObject.SetActive (false);
 	}
 
 	public static void StartGame() {

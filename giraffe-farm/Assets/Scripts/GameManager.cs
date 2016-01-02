@@ -94,4 +94,10 @@ public class GameManager : MonoBehaviour {
 		UIManager.Reset ();
 		CameraManager.Reset ();
 	}
+
+	public static void ResetGameToMenu() {
+		Instance.m_currentState = GameState.Unstarted;
+		UIManager.PreGame ();
+		CameraManager.Reset ();
+	}
 }

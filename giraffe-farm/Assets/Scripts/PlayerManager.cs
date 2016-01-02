@@ -66,6 +66,12 @@ public class PlayerManager : MonoBehaviour {
 		GameManager.ResetGame ();
 	}
 
+	public void OnMainMenu() {
+		ResetHits ();
+		GameObject.Destroy (m_ball);
+		GameManager.ResetGameToMenu ();
+	}
+
 	public static void Reset () {
 		Instance.m_ball.transform.position = Instance.m_startMarker.transform.position;
 		Instance.m_ball.transform.rotation = Quaternion.identity;
