@@ -13,10 +13,12 @@ public class LongPress : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 	public void OnPointerDown(PointerEventData eventData) {
 		this.m_isDown = true;
 		this.m_downTime = Time.realtimeSinceStartup;
+		SwingHandler.IgnoreInput = true;
 	}
 	
 	public void OnPointerUp(PointerEventData eventData) {
 		this.m_isDown = false;
+		SwingHandler.IgnoreInput = false;
 	}
 	
 	void Update() {
@@ -27,7 +29,7 @@ public class LongPress : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
 		if (!this.m_isDown) return;
 		if (Time.realtimeSinceStartup - this.m_downTime > 0.1f) {
-			//ugh I hate hacks like this, but for the sake of t
+			//ugh I hate hacks like this, but for the sake of seeing it work
 			if (m_parent.gameObject.name.Contains("Right")) {
 				CameraManager.MoveCameraRight();
 			} else if (m_parent.gameObject.name.Contains("Left")) {

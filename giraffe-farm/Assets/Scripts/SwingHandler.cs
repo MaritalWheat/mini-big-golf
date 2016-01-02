@@ -19,14 +19,25 @@ public class SwingHandler : MonoBehaviour {
 	private Vector3 m_move; // the world-relative desired move direction, calculated from the camForward and user input.
 	private Transform m_cam; // A reference to the main camera in the scenes transform
 	private Vector3 m_camForward; // The current forward direction of the camera
+	private bool m_ignoreInput;
+
+	private static SwingHandler Instance; 
+
+	public static bool IgnoreInput {
+		get { return Instance.m_ignoreInput; }
+		set { Instance.m_ignoreInput = value; }
+	}
 
 	void Start () {
+		if (Instance == null) {
+			Instance = this;
+		}
 		m_currentSwingState = SwingState.Unstarted;
 	}
 	
 	void Update () {
 		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted || GameManager.CurrentGameState ==
-			GameManager.GameState.Paused) {
+			GameManager.GameState.Paused || m_ignoreInput) {
 			m_currentSwingState = SwingState.Unstarted;
 			return;
 		}
