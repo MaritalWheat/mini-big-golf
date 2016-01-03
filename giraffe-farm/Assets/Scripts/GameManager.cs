@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour {
 		m_gamePauseTotalTime += Time.time - m_gamePauseStartTime;
 		m_currentState = GameState.Started;
 		PlayerManager.OnUnpause ();
-		UIManager.OnPause ();
+		UIManager.OnUnpause ();
 	}
 
 	public static void EndGame() {
