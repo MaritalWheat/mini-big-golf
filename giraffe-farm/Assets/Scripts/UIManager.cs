@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour {
 
 	public GameObject m_postCourseStats;
 	public GameObject m_cameraNavigatorAnchor;
+	public GameObject m_pauseMenu;
 	
 	void Start () {
 		if (Instance == null) {
@@ -28,12 +29,13 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public static void SetupPregame() {
-		Instance.m_startGameButton.gameObject.SetActive (true);
-		Instance.m_title.gameObject.SetActive (true);
 		Instance.m_hitCounter.gameObject.SetActive (false);
 		Instance.m_pauseGameButton.gameObject.SetActive (false);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
 		Instance.m_postCourseStats.gameObject.SetActive (false);
+		Instance.m_pauseMenu.gameObject.SetActive (false);
+		Instance.m_startGameButton.gameObject.SetActive (true);
+		Instance.m_title.gameObject.SetActive (true);
 	}
 
 	public static void OnStart() {
@@ -58,5 +60,19 @@ public class UIManager : MonoBehaviour {
 		Instance.m_postCourseStats.gameObject.SetActive (false);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
+	}
+
+	public static void OnPause() {
+		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
+		Instance.m_hitCounter.gameObject.SetActive (false);
+		Instance.m_pauseGameButton.gameObject.SetActive (false);
+		Instance.m_pauseMenu.gameObject.SetActive (true);
+	}
+
+	public static void OnUnpause() {
+		Instance.m_pauseMenu.gameObject.SetActive (false);
+		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
+		Instance.m_hitCounter.gameObject.SetActive (true);
+		Instance.m_pauseGameButton.gameObject.SetActive (true);
 	}
 }
