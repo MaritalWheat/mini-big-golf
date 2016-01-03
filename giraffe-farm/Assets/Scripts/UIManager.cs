@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour {
 		Instance.m_hitCounter.text = "Hits: " + newHitCount;
 	}
 
-	public static void PreGame() {
+	public static void SetupPregame() {
 		Instance.m_startGameButton.gameObject.SetActive (true);
 		Instance.m_title.gameObject.SetActive (true);
 		Instance.m_hitCounter.gameObject.SetActive (false);
@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour {
 		Instance.m_postCourseStats.gameObject.SetActive (false);
 	}
 
-	public static void StartGame() {
+	public static void OnStart() {
 		Instance.m_startGameButton.gameObject.SetActive (false);
 		Instance.m_title.gameObject.SetActive (false);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour {
 		Instance.m_pauseGameButton.gameObject.SetActive (true);
 	}
 
-	public static void PostGame(GameManager.GameStats gameStats) {
+	public static void SetupPostGame(GameManager.GameStats gameStats) {
 		Instance.m_hitCounter.gameObject.SetActive (false);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
 		Instance.m_postCourseStats.gameObject.SetActive (true);
@@ -54,7 +54,7 @@ public class UIManager : MonoBehaviour {
 		Instance.m_postGameTimeStat.text = "Time: " + gameStats.GetTimePlayed ();
 	}
 
-	public static void Reset() {
+	public static void OnReset() {
 		Instance.m_postCourseStats.gameObject.SetActive (false);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);

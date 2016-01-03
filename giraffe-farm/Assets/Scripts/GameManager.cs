@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void PreGame() {
-		UIManager.PreGame ();
+		UIManager.SetupPregame ();
 	}
 
 	//called from UI Start Button
@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour {
 		m_gameStartTime = Time.time;
 		m_gamePauseTotalTime = 0.0f;
 		//should probably use an event here eventually, this will be unscaleable...
-		UIManager.StartGame ();
+		UIManager.OnStart ();
 		PlayerManager.OnStart ();
 	}
 
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour {
 		Instance.m_currentState = GameState.Ended;
 
 		float timePlayed = (Time.time - Instance.m_gameStartTime) - Instance.m_gamePauseTotalTime;
-		UIManager.PostGame (new GameStats(timePlayed, PlayerManager.Hits));
+		UIManager.SetupPostGame (new GameStats(timePlayed, PlayerManager.Hits));
 	}
 
 	public static void ResetGame() {
@@ -92,13 +92,13 @@ public class GameManager : MonoBehaviour {
 		Instance.m_gameStartTime = Time.time;
 		Instance.m_gamePauseTotalTime = 0.0f;
 
-		UIManager.Reset ();
+		UIManager.OnReset ();
 		CameraManager.Reset ();
 	}
 
 	public static void ResetGameToMenu() {
 		Instance.m_currentState = GameState.Unstarted;
-		UIManager.PreGame ();
+		UIManager.SetupPregame ();
 		CameraManager.Reset ();
 	}
 }
