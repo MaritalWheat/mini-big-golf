@@ -57,6 +57,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public static void OnReset() {
+		Instance.m_pauseMenu.gameObject.SetActive (false);
 		Instance.m_postCourseStats.gameObject.SetActive (false);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
