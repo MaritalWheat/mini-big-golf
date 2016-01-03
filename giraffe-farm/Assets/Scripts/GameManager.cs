@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour {
 		m_gamePauseTotalTime = 0.0f;
 		//should probably use an event here eventually, this will be unscaleable...
 		UIManager.StartGame ();
+		PlayerManager.OnStart ();
 	}
 
 	//called from UI Pause Button
@@ -66,7 +67,7 @@ public class GameManager : MonoBehaviour {
 		if (m_currentState != GameState.Paused) {
 			m_currentState = GameState.Paused;
 			m_gamePauseStartTime = Time.time;
-			PlayerManager.Pause();
+			PlayerManager.OnPause();
 		} else {
 			UnpauseGame(); //temporary until menu is created
 		}
@@ -76,7 +77,7 @@ public class GameManager : MonoBehaviour {
 	public void UnpauseGame() {
 		m_gamePauseTotalTime += Time.time - m_gamePauseStartTime;
 		m_currentState = GameState.Started;
-		PlayerManager.UnPause ();
+		PlayerManager.OnUnpause ();
 	}
 
 	public static void EndGame() {

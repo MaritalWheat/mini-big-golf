@@ -28,14 +28,6 @@ public class PlayerManager : MonoBehaviour {
 		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted || GameManager.CurrentGameState == 
 		    GameManager.GameState.Paused) return;
 
-	    if (m_startMarker == null)
-        {
-            m_startMarker = GameObject.Find("Start Marker");
-			if (m_startMarker != null) {
-				m_ball = GameObject.Instantiate(m_ballPrefab, m_startMarker.transform.position, Quaternion.identity) as GameObject;
-			}
-        }
-
 		if (m_ball != null) {
 			Rigidbody rigidbody = m_ball.GetComponent<Rigidbody>();
 			if (rigidbody.IsSleeping ()) {
@@ -47,14 +39,25 @@ public class PlayerManager : MonoBehaviour {
 		}
 	}
 
-	public static void Pause() {
+	public static void OnStart() {
+		if (Instance.m_startMarker == null)
+		{
+			Instance.m_startMarker = GameObject.Find("Start Marker");
+		}
+
+		if (Instance.m_startMarker != null) {
+			Instance.m_ball = GameObject.Instantiate(Instance.m_ballPrefab, Instance.m_startMarker.transform.position, Quaternion.identity) as GameObject;
+		} 
+	}
+
+	public static void OnPause() {
 		Rigidbody rigidbody = Instance.m_ball.GetComponent<Rigidbody> ();
 		Instance.m_savedVelocity = rigidbody.velocity;
 		Instance.m_savedAngularVelocity = rigidbody.angularVelocity;
 		rigidbody.isKinematic = true;
 	}
 
-	public static void UnPause() {
+	public static void OnUnpause() {
 		Rigidbody rigidbody = Instance.m_ball.GetComponent<Rigidbody> ();
 		rigidbody.velocity = Instance.m_savedVelocity;
 		rigidbody.angularVelocity = Instance.m_savedAngularVelocity;
