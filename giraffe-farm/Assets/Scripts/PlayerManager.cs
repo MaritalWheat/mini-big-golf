@@ -64,6 +64,11 @@ public class PlayerManager : MonoBehaviour {
 		rigidbody.isKinematic = false;
 	}
 
+	public static void OnUnpausePostReset() {
+		Rigidbody rigidbody = Instance.m_ball.GetComponent<Rigidbody> ();
+		rigidbody.isKinematic = false;
+	}
+
 	public void OnResetClick() {
 		PlayerManager.Reset();
 		GameManager.ResetGame ();

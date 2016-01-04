@@ -82,6 +82,11 @@ public class GameManager : MonoBehaviour {
 		UIManager.OnUnpause ();
 	}
 
+	public void UnpauseGamePostReset() {
+		PlayerManager.OnUnpausePostReset ();
+		UIManager.OnUnpause ();
+	}
+
 	public static void EndGame() {
 		Instance.m_currentState = GameState.Ended;
 
@@ -90,12 +95,18 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public static void ResetGame() {
+		bool paused = false;
+		if (Instance.m_currentState == GameState.Paused)
+			paused = true;
 		Instance.m_currentState = GameState.Started;
 		Instance.m_gameStartTime = Time.time;
 		Instance.m_gamePauseTotalTime = 0.0f;
 
 		UIManager.OnReset ();
 		CameraManager.Reset ();
+
+		if (paused)
+			Instance.UnpauseGamePostReset ();
 	}
 
 	public static void ResetGameToMenu() {
