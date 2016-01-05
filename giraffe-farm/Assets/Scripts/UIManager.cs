@@ -49,6 +49,7 @@ public class UIManager : MonoBehaviour {
 	public static void SetupPostGame(GameManager.GameStats gameStats) {
 		Instance.m_hitCounter.gameObject.SetActive (false);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
+		Instance.m_pauseGameButton.gameObject.SetActive (false);
 		Instance.m_postCourseStats.gameObject.SetActive (true);
 
 		//set stats
@@ -59,6 +60,7 @@ public class UIManager : MonoBehaviour {
 	public static void OnReset() {
 		Instance.m_pauseMenu.gameObject.SetActive (false);
 		Instance.m_postCourseStats.gameObject.SetActive (false);
+		Instance.m_pauseGameButton.gameObject.SetActive (true);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
 	}
