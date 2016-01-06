@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour {
 	private int m_hits;
 	private Vector3 m_savedVelocity;
 	private Vector3 m_savedAngularVelocity;
-
+	private bool m_isRolling;
 
 	public static int Hits {
 		get { return Instance.m_hits; }
@@ -20,10 +20,9 @@ public class PlayerManager : MonoBehaviour {
 	void Start () {
        if (Instance == null) {
 			Instance = this;
-		}
-        
+		}  
     }
-	
+
 	void Update () {
 		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted || GameManager.CurrentGameState == 
 		    GameManager.GameState.Paused) return;
@@ -35,6 +34,10 @@ public class PlayerManager : MonoBehaviour {
 			}
 			if (rigidbody.velocity.magnitude < 0.15f) {
 				rigidbody.Sleep();
+
+				if (m_isRolling) {
+					PlayerManager.SetRollState(false);
+				}
 			}
 		}
 	}
@@ -98,5 +101,11 @@ public class PlayerManager : MonoBehaviour {
 	public static void IncrementHits() {
 		Instance.m_hits++;
 		UIManager.UpdateHits (Instance.m_hits);
+	}
+
+	public static void SetRollState(bool isRolling) {
+		Debug.Log ("Setting to: " + isRolling);
+		Instance.m_isRolling = isRolling;
+		UIManager.DisplayBallControls (!isRolling);
 	}
 }

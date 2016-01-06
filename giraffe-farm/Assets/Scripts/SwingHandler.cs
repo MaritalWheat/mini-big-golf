@@ -28,6 +28,7 @@ public class SwingHandler : MonoBehaviour {
 		set { Instance.m_ignoreInput = value; }
 	}
 
+
 	void Start () {
 		if (Instance == null) {
 			Instance = this;
@@ -72,6 +73,7 @@ public class SwingHandler : MonoBehaviour {
 			m_move = (m_swingInputDirection.z * m_camForward + m_swingInputDirection.x * m_cam.right).normalized;
 			m_ballRigidBody.AddForce(m_move * velocity);
             m_currentSwingState = SwingState.Unstarted;
+			PlayerManager.SetRollState(true);
 			PlayerManager.IncrementHits();
         }
     }
