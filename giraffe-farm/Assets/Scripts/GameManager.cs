@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour {
 			m_gamePauseStartTime = Time.time;
 			PlayerManager.OnPause();
 			UIManager.OnPause();
+			CameraManager.BlurBackgroundOnPause();
 		} else {
 			UnpauseGame(); //temporary until menu is created
 		}
@@ -80,6 +81,7 @@ public class GameManager : MonoBehaviour {
 		m_currentState = GameState.Started;
 		PlayerManager.OnUnpause ();
 		UIManager.OnUnpause ();
+		CameraManager.UnblurBackgroundOnPause ();
 	}
 
 	public void UnpauseGamePostReset() {

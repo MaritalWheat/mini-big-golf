@@ -80,6 +80,14 @@ public class CameraManager : MonoBehaviour {
 		Instance.StartCoroutine ("CameraFadeOutCoroutine");
 	}
 
+	public static void BlurBackgroundOnPause() {
+		Instance.StartCoroutine ("BackgroundBlurInCoroutine");
+	}
+
+	public static void UnblurBackgroundOnPause() {
+		Instance.StartCoroutine ("BackgroundBlurOutCoroutine");
+	}
+
 	IEnumerator CameraFadeOutCoroutine () {
 		VignetteAndChromaticAberration vignette = Camera.main.gameObject.GetComponent<VignetteAndChromaticAberration> ();
 		float t = 0.0f;
@@ -104,5 +112,27 @@ public class CameraManager : MonoBehaviour {
 			t += 0.5f * Time.deltaTime;
 			yield return null;
 		}	
+	}
+
+	IEnumerator BackgroundBlurOutCoroutine() {
+		BlurOptimized blur = Camera.main.gameObject.GetComponent<BlurOptimized> ();
+		float t = 0.0f;
+		while (t < 1.01f) {
+			blur.blurSize = Mathf.Lerp(4.0f, 0.0f, t / 1.0f);
+			t += 2.0f * Time.deltaTime;
+			yield return null;
+		}
+		blur.enabled = false;
+	}
+
+	IEnumerator BackgroundBlurInCoroutine() {
+		BlurOptimized blur = Camera.main.gameObject.GetComponent<BlurOptimized> ();
+		blur.enabled = true;
+		float t = 0.0f;
+		while (t < 1.01f) {
+			blur.blurSize = Mathf.Lerp(0.0f, 4.0f, t / 1.0f);
+			t += 2.0f * Time.deltaTime;
+			yield return null;
+		}
 	}
 }
