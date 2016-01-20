@@ -16,6 +16,8 @@ public class CourseCreator : MonoBehaviour {
 
 	private int m_seed = 12345;
 
+	[SerializeField] private int m_courseSize = 0; //exposing for easier testing
+
 	public static List<GameObject> Course { get { return Instance.m_course; } }
 
     private enum Direction
@@ -70,10 +72,10 @@ public class CourseCreator : MonoBehaviour {
 		Random.seed = m_seed;
 		
 		m_course.Add(GameObject.Instantiate(m_blockTypesForward[0], Vector3.zero, Quaternion.identity) as GameObject);
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < m_courseSize; i++)
 		{
 			bool courseEnd = false;
-			if (i == 1) {
+			if (i == (m_courseSize - 1)) {
 				courseEnd = true;
 			}
 			GameObject lastBlock = m_course[m_course.Count - 1];
