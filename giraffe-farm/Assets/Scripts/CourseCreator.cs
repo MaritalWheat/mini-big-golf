@@ -15,6 +15,7 @@ public class CourseCreator : MonoBehaviour {
     private List<GameObject> m_course = new List<GameObject>();
 
 	private int m_seed = 12345;
+	private int m_coursePar = 0;
 
 	[SerializeField] private int m_courseSize = 0; //exposing for easier testing
 
@@ -138,11 +139,20 @@ public class CourseCreator : MonoBehaviour {
 				} else {
 					m_course.Add(GameObject.Instantiate(m_blockTypesRight[Random.Range(0, m_blockTypesRight.Count)], nextPos, Quaternion.identity) as GameObject);
 				}
-				//GameObject placed = m_course[m_course.Count - 1];
+
+				AddCoursePar(m_course[m_course.Count - 1]);
 			}
 
 			//IMPORTANT - send the "pre game" camera position signal once the course is completed
 			CameraManager.SetCameraPreGamePosition();
+			Debug.Log("Course par: " + m_coursePar);
+		}
+	}
+
+	private void AddCoursePar(GameObject placedCourseBlock) {
+		if (placedCourseBlock.GetComponent<CourseBlock> () != null) {
+			CourseBlock block = placedCourseBlock.GetComponent<CourseBlock>();
+			m_coursePar += block.ParScore;
 		}
 	}
 }
