@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour {
 
 	private static UIManager Instance;
 
+	public Text m_coursePar;
 	public Text m_hitCounter;
 	public Text m_postGameHitCount;
 	public Text m_postGameTimeStat;
@@ -33,12 +34,17 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
+	public static void SetCoursePar(int coursePar) {
+		Instance.m_coursePar.text = "PAR: " + coursePar;
+	}
+
 	public static void SetupPregame() {
 		Instance.m_hitCounter.gameObject.SetActive (false);
 		Instance.m_pauseGameButton.gameObject.SetActive (false);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
 		Instance.m_postCourseStats.gameObject.SetActive (false);
 		Instance.m_pauseMenu.gameObject.SetActive (false);
+		Instance.m_coursePar.gameObject.SetActive (true);
 		Instance.m_startGameButton.gameObject.SetActive (true);
 		Instance.m_title.gameObject.SetActive (true);
 	}
@@ -46,6 +52,7 @@ public class UIManager : MonoBehaviour {
 	public static void OnStart() {
 		Instance.m_startGameButton.gameObject.SetActive (false);
 		Instance.m_title.gameObject.SetActive (false);
+		Instance.m_coursePar.gameObject.SetActive (false);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_pauseGameButton.gameObject.SetActive (true);

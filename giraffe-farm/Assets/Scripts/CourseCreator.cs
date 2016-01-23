@@ -147,6 +147,7 @@ public class CourseCreator : MonoBehaviour {
 			AddCoursePar(m_course[m_course.Count - 1]);
 		}
 		CameraManager.SetCameraPreGamePosition();
+		UIManager.SetCoursePar (m_coursePar);
 		Debug.Log("Course par: " + m_coursePar);
 	}
 
