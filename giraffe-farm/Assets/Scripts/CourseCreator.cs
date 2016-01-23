@@ -62,6 +62,7 @@ public class CourseCreator : MonoBehaviour {
 			Destroy(block);
 		}
 
+		Instance.m_coursePar = 0;
 		Instance.m_currentDirection = Direction.Forward;
 		Instance.m_course = new List<GameObject> ();
 		Instance.GenerateCourse ();
