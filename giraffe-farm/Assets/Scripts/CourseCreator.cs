@@ -139,14 +139,13 @@ public class CourseCreator : MonoBehaviour {
 				} else {
 					m_course.Add(GameObject.Instantiate(m_blockTypesRight[Random.Range(0, m_blockTypesRight.Count)], nextPos, Quaternion.identity) as GameObject);
 				}
-
-				AddCoursePar(m_course[m_course.Count - 1]);
 			}
 
 			//IMPORTANT - send the "pre game" camera position signal once the course is completed
-			CameraManager.SetCameraPreGamePosition();
-			Debug.Log("Course par: " + m_coursePar);
+			AddCoursePar(m_course[m_course.Count - 1]);
 		}
+		CameraManager.SetCameraPreGamePosition();
+		Debug.Log("Course par: " + m_coursePar);
 	}
 
 	private void AddCoursePar(GameObject placedCourseBlock) {
