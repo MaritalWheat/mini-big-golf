@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour {
 	public void UnpauseGamePostReset() {
 		PlayerManager.OnUnpausePostReset ();
 		UIManager.OnUnpause ();
+		CameraManager.UnblurBackgroundOnPause ();
 	}
 
 	public static void EndGame() {
@@ -112,6 +113,13 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public static void ResetGameToMenu() {
+		bool paused = false;
+		if (Instance.m_currentState == GameState.Paused)
+			paused = true;
+
+		if (paused) 
+			Instance.UnpauseGamePostReset ();
+
 		Instance.m_currentState = GameState.Unstarted;
 		UIManager.SetupPregame ();
 		CameraManager.Reset ();
