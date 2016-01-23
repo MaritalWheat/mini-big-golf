@@ -20,6 +20,7 @@ public class CourseCreator : MonoBehaviour {
 	[SerializeField] private int m_courseSize = 0; //exposing for easier testing
 
 	public static List<GameObject> Course { get { return Instance.m_course; } }
+	public static int CoursePar { get { return Instance.m_coursePar; } }
 
     private enum Direction
     {

@@ -51,6 +51,8 @@ public class PlayerManager : MonoBehaviour {
 		if (Instance.m_startMarker != null) {
 			Instance.m_ball = GameObject.Instantiate(Instance.m_ballPrefab, Instance.m_startMarker.transform.position, Quaternion.identity) as GameObject;
 		} 
+
+		Instance.ResetHits ();
 	}
 
 	public static void OnPause() {

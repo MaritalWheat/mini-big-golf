@@ -25,7 +25,12 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public static void UpdateHits(int newHitCount) {
-		Instance.m_hitCounter.text = "Hits: " + newHitCount;
+		int score = newHitCount - CourseCreator.CoursePar;
+		if (score > 0) {
+			Instance.m_hitCounter.text = "SCORE: +" + (score);
+		} else {
+			Instance.m_hitCounter.text = "SCORE: " + (score);
+		}
 	}
 
 	public static void SetupPregame() {
