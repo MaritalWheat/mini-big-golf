@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour {
 	public GameObject m_postCourseStats;
 	public GameObject m_cameraNavigatorAnchor;
 	public GameObject m_pauseMenu;
+
+	private bool m_displayCameraNavigatorAnchor;
 	
 	void Start () {
 		if (Instance == null) {
@@ -86,12 +88,13 @@ public class UIManager : MonoBehaviour {
 
 	public static void OnUnpause() {
 		Instance.m_pauseMenu.gameObject.SetActive (false);
-		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
+		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (Instance.m_displayCameraNavigatorAnchor);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_pauseGameButton.gameObject.SetActive (true);
 	}
 
 	public static void DisplayBallControls(bool showControls) {
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (showControls);
+		Instance.m_displayCameraNavigatorAnchor = showControls;
 	}
 }
