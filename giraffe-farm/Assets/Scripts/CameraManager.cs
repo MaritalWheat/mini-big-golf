@@ -8,8 +8,8 @@ public class CameraManager : MonoBehaviour {
 	private Transform m_cameraMarker;
 	private Vector3 m_courseCenter;
 	private float m_radius = 5.0f;
-	private float m_radiusMax = 20.0f;
-	private float m_radiusMin = 10.0f;
+	private float m_radiusMax = 10.0f;
+	private float m_radiusMin = 5.0f;
 	private float m_radiusSpeed = 0.5f;
 	private bool m_initialGameStart;
 	private bool m_gameCameraPositioned;
@@ -30,7 +30,13 @@ public class CameraManager : MonoBehaviour {
 			m_autoCamInstance.transform.RotateAround (m_courseCenter, Vector3.up, 4.0f * Time.deltaTime);
 			Vector3 desiredPosition = (m_autoCamInstance.transform.position - m_courseCenter).normalized * m_radius + m_courseCenter;
 
-			if (Mathf.Approximately (Camera.main.transform.position.x - desiredPosition.x, 0.0f)) {
+			/*if(GameManager.CurrentGameState == GameManager.GameState.Paused && m_autoCamInstance.transform.position.y < 2.0f) {
+				Debug.Log("artifically increasing");
+				Instance.m_autoCamInstance.transform.LookAt (m_cameraMarker);
+				desiredPosition.y += 6.0f;
+			}*/
+
+			if (Mathf.Approximately (m_autoCamInstance.transform.position.x - desiredPosition.x, 0.0f)) {
 				if (m_radius == m_radiusMin) {
 					m_radius = m_radiusMax;
 				} else {
@@ -39,7 +45,7 @@ public class CameraManager : MonoBehaviour {
 			}
 
 			Instance.m_autoCamInstance.transform.position = Vector3.MoveTowards (m_autoCamInstance.transform.position, desiredPosition, Time.deltaTime * m_radiusSpeed);   
-			Instance.m_autoCamInstance.transform.LookAt (m_courseCenter);
+			//Instance.m_autoCamInstance.transform.LookAt (m_courseCenter);
 		} else if (Input.GetKey (KeyCode.Q)) {
 			m_autoCamInstance.transform.RotateAround (GameObject.FindGameObjectWithTag("Player").transform.position, Vector3.up, 4.0f * Time.deltaTime);
 		} else {
