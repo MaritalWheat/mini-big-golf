@@ -12,9 +12,18 @@ public class PlayerManager : MonoBehaviour {
 	private Vector3 m_savedVelocity;
 	private Vector3 m_savedAngularVelocity;
 	private bool m_isRolling;
+	private bool m_hasBeenHit;
 
 	public static int Hits {
 		get { return Instance.m_hits; }
+	}
+
+	public static bool HasBeenHit {
+		get { return Instance.m_hasBeenHit; }
+	}
+
+	public static bool IsRolling {
+		get { return Instance.m_isRolling; }
 	}
 
 	void Start () {
@@ -34,6 +43,7 @@ public class PlayerManager : MonoBehaviour {
 			}
 			if (rigidbody.velocity.magnitude < 0.15f) {
 				rigidbody.Sleep();
+				rigidbody.velocity = Vector3.zero;
 
 				if (m_isRolling) {
 					PlayerManager.SetRollState(false);
@@ -67,11 +77,16 @@ public class PlayerManager : MonoBehaviour {
 		rigidbody.velocity = Instance.m_savedVelocity;
 		rigidbody.angularVelocity = Instance.m_savedAngularVelocity;
 		rigidbody.isKinematic = false;
+
+
+		Instance.ResetHasBeenHit ();
+
 	}
 
 	public static void OnUnpausePostReset() {
 		Rigidbody rigidbody = Instance.m_ball.GetComponent<Rigidbody> ();
 		rigidbody.isKinematic = false;
+		Instance.ResetHasBeenHit ();
 	}
 
 	public void OnResetClick() {
@@ -93,11 +108,18 @@ public class PlayerManager : MonoBehaviour {
 		rigidbody.velocity = Vector3.zero;
 
 		Instance.ResetHits ();
+		PlayerManager.SetRollState (false);
 	}
 
 	private void ResetHits() {
 		m_hits = 0;
+		ResetHasBeenHit ();
 		UIManager.UpdateHits (m_hits);
+	}
+
+	private void ResetHasBeenHit() {
+		Instance.m_hasBeenHit = false;
+		CameraManager.Reset ();
 	}
 
 	public static void IncrementHits() {
@@ -106,7 +128,10 @@ public class PlayerManager : MonoBehaviour {
 	}
 
 	public static void SetRollState(bool isRolling) {
-		Debug.Log ("Setting to: " + isRolling);
+		if (isRolling && !Instance.m_hasBeenHit) {
+			Instance.m_hasBeenHit = true;
+		}
+
 		Instance.m_isRolling = isRolling;
 		UIManager.DisplayBallControls (!isRolling);
 	}

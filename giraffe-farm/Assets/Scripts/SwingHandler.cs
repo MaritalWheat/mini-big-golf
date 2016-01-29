@@ -65,7 +65,6 @@ public class SwingHandler : MonoBehaviour {
 
         if (m_currentSwingState == SwingState.Ended)
         {
-            Debug.Log("Performing swing.");
             float velocity = Vector3.Distance(m_swingInputStartPosition, m_swingInputEndPosition) / m_swingTime;
             //Debug.Log("Acceleration: " + velocity);
             
@@ -84,18 +83,15 @@ public class SwingHandler : MonoBehaviour {
 			return SwingState.Unstarted;
 		} else if (m_currentSwingState == SwingState.Unstarted) {
             if (Input.GetMouseButton(0)) {
-                Debug.Log("Starting swing.");
                 m_swingInputStartPosition = Input.mousePosition;
                 m_swingTime = 0.0f;
                 return SwingState.Started;
             }
 		} else if (m_currentSwingState == SwingState.Started) {
 			if (Input.GetMouseButtonUp(0)) {
-                Debug.Log("Ending swing.");
                 m_swingInputEndPosition = Input.mousePosition;
                 Vector3 rawDirection = m_swingInputStartPosition - m_swingInputEndPosition;
                 m_swingInputDirection = new Vector3(-rawDirection.x, 0.0f, -rawDirection.y);
-                Debug.Log("Swing direction: " + m_swingInputDirection);
                 return SwingState.Ended;
 			} else {
                 m_swingTime += Time.deltaTime;

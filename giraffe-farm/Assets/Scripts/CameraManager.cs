@@ -75,7 +75,29 @@ public class CameraManager : MonoBehaviour {
 	}
 
 	public static void Reset() {
+		if (PlayerManager.IsRolling) {
+			Instance.OnPauseWhileRolling();
+			return;
+		}
+
 		Instance.m_gameCameraPositioned = false;
+	}
+
+	public static void HardReset() {
+		Instance.m_gameCameraPositioned = false;
+	}
+
+	public static void OnPause() {
+		if (PlayerManager.IsRolling) {
+			Instance.OnPauseWhileRolling();
+			return;
+		}
+
+		Instance.m_autoCamInstance.SetSavedDirection(Instance.m_autoCamInstance.transform.forward);
+	}
+
+	private void OnPauseWhileRolling() {
+		m_autoCamInstance.SetOverrideForMovingPause ();
 	}
 
 	public static void FadeCameraOnLaunch() {

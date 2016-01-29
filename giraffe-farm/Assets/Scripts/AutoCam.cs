@@ -18,6 +18,8 @@ namespace UnityStandardAssets.Cameras
         private float m_CurrentTurnAmount; // How much to turn the camera
         private float m_TurnSpeedVelocityChange; // The change in the turn speed velocity
         private Vector3 m_RollUp = Vector3.up;// The roll of the camera around the z axis ( generally this will always just be up )
+		private Vector3 m_savedDirection = Vector3.zero;
+		private bool m_postPause;
 
         protected override void FollowTarget(float deltaTime) {
             // if no target, or no time passed then we quit early, as there is nothing to do
@@ -37,10 +39,18 @@ namespace UnityStandardAssets.Cameras
 				// velocity is high enough, so we'll use the target's velocty
 				if (CameraManager.GameCameraPositioned) {
 					targetForward = targetRigidbody.velocity.normalized;
-				} else if (!Mathf.Approximately(targetRigidbody.velocity.magnitude, 0.0f) && !CameraManager.GameCameraPositioned) {
+				} else if (PlayerManager.HasBeenHit && PlayerManager.IsRolling && !CameraManager.GameCameraPositioned && 
+				           !(m_postPause)) {
+					Debug.Log("Game camera not positioned.");
 					targetForward = targetRigidbody.velocity.normalized;
 					CameraManager.SetGameCameraAsPositioned();
-				} 
+				} else if (PlayerManager.HasBeenHit && PlayerManager.IsRolling && !CameraManager.GameCameraPositioned && m_postPause) {
+					targetForward = targetRigidbody.velocity.normalized;
+					m_postPause = false;
+					CameraManager.SetGameCameraAsPositioned();
+				} else if (m_postPause) {
+					targetForward = m_savedDirection;
+				}
 
 				targetUp = Vector3.up;
 
@@ -60,11 +70,25 @@ namespace UnityStandardAssets.Cameras
                 targetForward = transform.forward;
             }
 
-            var rollRotation = Quaternion.LookRotation(targetForward, m_RollUp);
+			if (targetForward == Vector3.zero) {  
+				Debug.Log ("Target Forward = Vector3.zero");
+			}
 
-            // and aligning with the target object's up direction (i.e. its 'roll')
-            m_RollUp = m_RollSpeed > 0 ? Vector3.Slerp(m_RollUp, targetUp, m_RollSpeed*deltaTime) : Vector3.up;
-            transform.rotation = Quaternion.Lerp(transform.rotation, rollRotation, m_TurnSpeed*m_CurrentTurnAmount*deltaTime);
+			var rollRotation = Quaternion.LookRotation (targetForward, m_RollUp);
+
+			// and aligning with the target object's up direction (i.e. its 'roll')
+			m_RollUp = m_RollSpeed > 0 ? Vector3.Slerp (m_RollUp, targetUp, m_RollSpeed * deltaTime) : Vector3.up;
+			transform.rotation = Quaternion.Lerp (transform.rotation, rollRotation, m_TurnSpeed * m_CurrentTurnAmount * deltaTime);
         }
+
+		public void SetSavedDirection(Vector3 lastDirection) {
+			m_savedDirection = lastDirection;
+			m_postPause = true;
+		}
+
+		public void SetOverrideForMovingPause() {
+			CameraManager.SetGameCameraAsPositioned ();
+			m_postPause = false;
+		}
     }
 }

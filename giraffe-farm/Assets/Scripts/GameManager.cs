@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour {
 			m_gamePauseStartTime = Time.time;
 			PlayerManager.OnPause();
 			UIManager.OnPause();
+			CameraManager.OnPause ();
 			CameraManager.BlurBackgroundOnPause();
 		} else {
 			UnpauseGame(); //temporary until menu is created
@@ -82,12 +83,14 @@ public class GameManager : MonoBehaviour {
 		PlayerManager.OnUnpause ();
 		UIManager.OnUnpause ();
 		CameraManager.UnblurBackgroundOnPause ();
+		CameraManager.Reset (); 
 	}
 
 	public void UnpauseGamePostReset() {
 		PlayerManager.OnUnpausePostReset ();
 		UIManager.OnUnpause ();
 		CameraManager.UnblurBackgroundOnPause ();
+		CameraManager.Reset ();
 	}
 
 	public static void EndGame() {
@@ -106,7 +109,8 @@ public class GameManager : MonoBehaviour {
 		Instance.m_gamePauseTotalTime = 0.0f;
 
 		UIManager.OnReset ();
-		CameraManager.Reset ();
+		PlayerManager.Reset ();
+		CameraManager.HardReset ();
 
 		if (paused)
 			Instance.UnpauseGamePostReset ();
