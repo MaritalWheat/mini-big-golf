@@ -55,11 +55,16 @@ public class CameraManager : MonoBehaviour {
 
 	public static void MoveCameraRight() {
 		Instance.m_autoCamInstance.transform.RotateAround (GameObject.FindGameObjectWithTag("Player").transform.position, Vector3.down, 50.0f * Time.deltaTime);
+		if (!GameCameraPositioned) {
+			SetGameCameraAsPositioned ();
+		}
 	}
 
 	public static void MoveCameraLeft() {
 		Instance.m_autoCamInstance.transform.RotateAround (GameObject.FindGameObjectWithTag("Player").transform.position, Vector3.up, 50.0f * Time.deltaTime);
-
+		if (!GameCameraPositioned) {
+			SetGameCameraAsPositioned ();
+		}
 	}
 
 	public static void SetCameraPreGamePosition() {
@@ -76,7 +81,7 @@ public class CameraManager : MonoBehaviour {
 
 	public static void Reset() {
 		if (PlayerManager.IsRolling) {
-			Instance.OnPauseWhileRolling();
+			Instance.UnPauseWhileRolling();
 			return;
 		}
 
@@ -84,19 +89,20 @@ public class CameraManager : MonoBehaviour {
 	}
 
 	public static void HardReset() {
+		Instance.m_autoCamInstance.SetOverrideForHardReset ();
 		Instance.m_gameCameraPositioned = false;
 	}
 
 	public static void OnPause() {
-		if (PlayerManager.IsRolling) {
+		/*if (PlayerManager.IsRolling) {
 			Instance.OnPauseWhileRolling();
 			return;
-		}
+		}*/
 
 		Instance.m_autoCamInstance.SetSavedDirection(Instance.m_autoCamInstance.transform.forward);
 	}
 
-	private void OnPauseWhileRolling() {
+	private void UnPauseWhileRolling() {
 		m_autoCamInstance.SetOverrideForMovingPause ();
 	}
 

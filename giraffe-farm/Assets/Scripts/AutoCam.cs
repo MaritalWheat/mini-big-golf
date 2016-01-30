@@ -41,7 +41,6 @@ namespace UnityStandardAssets.Cameras
 					targetForward = targetRigidbody.velocity.normalized;
 				} else if (PlayerManager.HasBeenHit && PlayerManager.IsRolling && !CameraManager.GameCameraPositioned && 
 				           !(m_postPause)) {
-					Debug.Log("Game camera not positioned.");
 					targetForward = targetRigidbody.velocity.normalized;
 					CameraManager.SetGameCameraAsPositioned();
 				} else if (PlayerManager.HasBeenHit && PlayerManager.IsRolling && !CameraManager.GameCameraPositioned && m_postPause) {
@@ -88,6 +87,10 @@ namespace UnityStandardAssets.Cameras
 
 		public void SetOverrideForMovingPause() {
 			CameraManager.SetGameCameraAsPositioned ();
+			m_postPause = false;
+		}
+
+		public void SetOverrideForHardReset() {
 			m_postPause = false;
 		}
     }
