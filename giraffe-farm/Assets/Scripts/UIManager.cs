@@ -81,6 +81,7 @@ public class UIManager : MonoBehaviour {
 		Instance.m_pauseGameButton.gameObject.SetActive (true);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
+		Instance.m_powerBar.gameObject.SetActive (true);
 	}
 
 	public static void OnPause() {

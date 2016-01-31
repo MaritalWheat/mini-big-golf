@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PowerBar : MonoBehaviour {
-
-	[SerializeField] private GameObject m_beginning;
+	
 	[SerializeField] private GameObject m_middle;
 	[SerializeField] private GameObject m_end;
 
