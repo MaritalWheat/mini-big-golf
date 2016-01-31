@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour {
 	public GameObject m_postCourseStats;
 	public GameObject m_cameraNavigatorAnchor;
 	public GameObject m_pauseMenu;
+	public GameObject m_powerBar;
 
 	private bool m_displayCameraNavigatorAnchor;
 	
@@ -46,6 +47,7 @@ public class UIManager : MonoBehaviour {
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
 		Instance.m_postCourseStats.gameObject.SetActive (false);
 		Instance.m_pauseMenu.gameObject.SetActive (false);
+		Instance.m_powerBar.gameObject.SetActive (false);
 		Instance.m_coursePar.gameObject.SetActive (true);
 		Instance.m_startGameButton.gameObject.SetActive (true);
 		Instance.m_title.gameObject.SetActive (true);
@@ -58,11 +60,13 @@ public class UIManager : MonoBehaviour {
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_pauseGameButton.gameObject.SetActive (true);
+		Instance.m_powerBar.gameObject.SetActive (true);
 	}
 
 	public static void SetupPostGame(GameManager.GameStats gameStats) {
 		Instance.m_hitCounter.gameObject.SetActive (false);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
+		Instance.m_powerBar.gameObject.SetActive (false);
 		Instance.m_pauseGameButton.gameObject.SetActive (false);
 		Instance.m_postCourseStats.gameObject.SetActive (true);
 
@@ -83,6 +87,7 @@ public class UIManager : MonoBehaviour {
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
 		Instance.m_hitCounter.gameObject.SetActive (false);
 		Instance.m_pauseGameButton.gameObject.SetActive (false);
+		Instance.m_powerBar.gameObject.SetActive (false);
 		Instance.m_pauseMenu.gameObject.SetActive (true);
 	}
 
@@ -91,10 +96,12 @@ public class UIManager : MonoBehaviour {
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (Instance.m_displayCameraNavigatorAnchor);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_pauseGameButton.gameObject.SetActive (true);
+		Instance.m_powerBar.gameObject.SetActive (true);
 	}
 
 	public static void DisplayBallControls(bool showControls) {
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (showControls);
+		//Instance.m_powerBar.gameObject.SetActive (showControls);
 		Instance.m_displayCameraNavigatorAnchor = showControls;
 	}
 }

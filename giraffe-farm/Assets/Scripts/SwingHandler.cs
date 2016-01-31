@@ -75,6 +75,8 @@ public class SwingHandler : MonoBehaviour {
 			PlayerManager.SetRollState(true);
 			PlayerManager.IncrementHits();
         }
+
+		PowerBar.SetFill (m_ballRigidBody.velocity.magnitude / 5.0f);
     }
 
 	private SwingState SetCurrentSwingState () {
