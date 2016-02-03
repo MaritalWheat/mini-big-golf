@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class UIManager : MonoBehaviour {
 
@@ -71,8 +72,8 @@ public class UIManager : MonoBehaviour {
 		Instance.m_postCourseStats.gameObject.SetActive (true);
 
 		//set stats
-		Instance.m_postGameHitCount.text = "Hits: " + gameStats.GetNumHits ();
-		Instance.m_postGameTimeStat.text = "Time: " + gameStats.GetTimePlayed ();
+		Instance.m_postGameHitCount.text = gameStats.GetNumHits ().ToString();
+		Instance.m_postGameTimeStat.text = Math.Round((double)(gameStats.GetTimePlayed ()), 2).ToString();
 	}
 
 	public static void OnReset() {
