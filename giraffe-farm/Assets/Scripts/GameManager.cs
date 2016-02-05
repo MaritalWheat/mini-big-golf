@@ -89,7 +89,6 @@ public class GameManager : MonoBehaviour {
 	public void UnpauseGamePostReset() {
 		PlayerManager.OnUnpausePostReset ();
 		UIManager.OnUnpause ();
-		CameraManager.UnblurBackgroundOnPause ();
 		CameraManager.HardReset ();
 	}
 
@@ -98,6 +97,7 @@ public class GameManager : MonoBehaviour {
 
 		float timePlayed = (Time.time - Instance.m_gameStartTime) - Instance.m_gamePauseTotalTime;
 		UIManager.SetupPostGame (new GameStats(timePlayed, PlayerManager.Hits));
+		CameraManager.BlurBackgroundOnPause ();
 	}
 
 	public static void ResetGame() {
@@ -111,6 +111,7 @@ public class GameManager : MonoBehaviour {
 		UIManager.OnReset ();
 		PlayerManager.Reset ();
 		CameraManager.HardReset ();
+		CameraManager.UnblurBackgroundOnPause ();
 
 		if (paused)
 			Instance.UnpauseGamePostReset ();
@@ -127,5 +128,7 @@ public class GameManager : MonoBehaviour {
 		Instance.m_currentState = GameState.Unstarted;
 		UIManager.SetupPregame ();
 		CameraManager.HardReset ();
+		CameraManager.UnblurBackgroundOnPause ();
+
 	}
 }
