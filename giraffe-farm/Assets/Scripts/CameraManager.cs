@@ -13,6 +13,7 @@ public class CameraManager : MonoBehaviour {
 	private float m_radiusSpeed = 0.5f;
 	private bool m_initialGameStart;
 	private bool m_gameCameraPositioned;
+	private float m_targetSaturation;
 
 	public static bool GameCameraPositioned { get { return Instance.m_gameCameraPositioned; } }
 
@@ -22,6 +23,8 @@ public class CameraManager : MonoBehaviour {
 		if (Instance == null) {
 			Instance = this;
 		}
+
+		m_targetSaturation = Camera.main.gameObject.GetComponent<ColorCorrectionCurves> ().saturation;
 	}
 	
 	void FixedUpdate () {
@@ -150,10 +153,14 @@ public class CameraManager : MonoBehaviour {
 
 	IEnumerator BackgroundBlurOutCoroutine() {
 		BlurOptimized blur = Camera.main.gameObject.GetComponent<BlurOptimized> ();
+		ColorCorrectionCurves colorCorrection = Camera.main.gameObject.GetComponent<ColorCorrectionCurves> ();
+		VignetteAndChromaticAberration vignette = Camera.main.gameObject.GetComponent<VignetteAndChromaticAberration> ();
 		float t = 0.0f;
 		while (t < 1.01f) {
 			blur.blurSize = Mathf.Lerp(4.0f, 0.0f, t / 1.0f);
-			t += 2.0f * Time.deltaTime;
+			colorCorrection.saturation = Mathf.Lerp (0.0f, m_targetSaturation, t / 1.0f);
+			vignette.intensity = Mathf.Lerp(0.3f, 0.0f, t / 1.0f); 
+			t += 1.0f * Time.deltaTime;
 			yield return null;
 		}
 		blur.enabled = false;
@@ -161,11 +168,15 @@ public class CameraManager : MonoBehaviour {
 
 	IEnumerator BackgroundBlurInCoroutine() {
 		BlurOptimized blur = Camera.main.gameObject.GetComponent<BlurOptimized> ();
+		ColorCorrectionCurves colorCorrection = Camera.main.gameObject.GetComponent<ColorCorrectionCurves> ();
+		VignetteAndChromaticAberration vignette = Camera.main.gameObject.GetComponent<VignetteAndChromaticAberration> ();
 		blur.enabled = true;
 		float t = 0.0f;
 		while (t < 1.01f) {
 			blur.blurSize = Mathf.Lerp(0.0f, 4.0f, t / 1.0f);
-			t += 2.0f * Time.deltaTime;
+			colorCorrection.saturation = Mathf.Lerp (m_targetSaturation, 0.0f, t / 1.0f);
+			vignette.intensity = Mathf.Lerp(0.0f, 0.3f, t / 1.0f); 
+			t += 1.0f * Time.deltaTime;
 			yield return null;
 		}
 	}
