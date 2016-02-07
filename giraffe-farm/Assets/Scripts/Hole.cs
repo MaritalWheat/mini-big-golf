@@ -5,6 +5,10 @@ public class Hole : MonoBehaviour {
 
 	public MeshCollider blockMesh;
 
+	void Start() {
+		GameManager.GameReset += new GameResetEventHandler (Reset);
+	}
+
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Player") {
 			blockMesh.enabled = false;
@@ -19,5 +23,10 @@ public class Hole : MonoBehaviour {
 			//Debug.Log ("Game Over");
 			//PlayerManager.Reset();
 		}
+	}
+
+	void Reset() {
+		//Debug.LogError ("Reset Event test");
+		blockMesh.enabled = true;
 	}
 }

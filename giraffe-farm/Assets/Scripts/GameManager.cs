@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public delegate void GameResetEventHandler (); 
+
 public class GameManager : MonoBehaviour {
 
 	public class GameStats
@@ -27,6 +29,8 @@ public class GameManager : MonoBehaviour {
 	private float m_gameStartTime;
 	private float m_gamePauseStartTime;
 	private float m_gamePauseTotalTime;
+	
+	public static event GameResetEventHandler GameReset;
 
 	public static GameState CurrentGameState {
 		get { return Instance.m_currentState; }
@@ -112,6 +116,7 @@ public class GameManager : MonoBehaviour {
 		PlayerManager.Reset ();
 		CameraManager.HardReset ();
 		CameraManager.UnblurBackgroundOnPause ();
+		GameReset ();
 
 		if (paused)
 			Instance.UnpauseGamePostReset ();
@@ -129,6 +134,6 @@ public class GameManager : MonoBehaviour {
 		UIManager.SetupPregame ();
 		CameraManager.HardReset ();
 		CameraManager.UnblurBackgroundOnPause ();
-
+		GameReset ();
 	}
 }

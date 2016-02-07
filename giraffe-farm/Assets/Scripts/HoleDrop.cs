@@ -9,6 +9,7 @@ public class HoleDrop : MonoBehaviour {
 		if (other.tag == "Player") {
 			holeCoverMesh.enabled = false;
 			Debug.Log("Game Over!");
+			//calls given method after given time
 			Invoke("FinishCourse", 2.0f);
 		}
 	}
