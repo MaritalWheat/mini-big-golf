@@ -72,7 +72,14 @@ public class UIManager : MonoBehaviour {
 		Instance.m_postCourseStats.gameObject.SetActive (true);
 
 		//set stats
-		Instance.m_postGameHitCount.text = gameStats.GetNumHits ().ToString();
+		int score = gameStats.GetNumHits () - CourseCreator.CoursePar;
+		string scoreText = "";
+		if (score > 0) {
+			scoreText += "+" + score;
+		} else {
+			scoreText += score;
+		}
+		Instance.m_postGameHitCount.text = scoreText;
 		Instance.m_postGameTimeStat.text = Math.Round((double)(gameStats.GetTimePlayed ()), 2).ToString();
 	}
 
