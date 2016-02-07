@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class UIManager : MonoBehaviour {
@@ -20,6 +21,8 @@ public class UIManager : MonoBehaviour {
 	public GameObject m_cameraNavigatorAnchor;
 	public GameObject m_pauseMenu;
 	public GameObject m_powerBar;
+	public List<GameObject> m_starsFilled = new List<GameObject>();
+	public List<GameObject> m_starsEmpty = new List<GameObject>();
 
 	private bool m_displayCameraNavigatorAnchor;
 	
@@ -71,6 +74,11 @@ public class UIManager : MonoBehaviour {
 		Instance.m_pauseGameButton.gameObject.SetActive (false);
 		Instance.m_postCourseStats.gameObject.SetActive (true);
 
+		//make sure all grey stars are reset
+		for (int i = 0; i < Instance.m_starsEmpty.Count; i++) {
+			Instance.m_starsEmpty[i].SetActive(true);
+		}
+
 		//set stats
 		int score = gameStats.GetNumHits () - CourseCreator.CoursePar;
 		string scoreText = "";
@@ -81,6 +89,31 @@ public class UIManager : MonoBehaviour {
 		}
 		Instance.m_postGameHitCount.text = scoreText;
 		Instance.m_postGameTimeStat.text = Math.Round((double)(gameStats.GetTimePlayed ()), 2).ToString();
+
+		//set star score - should maybe move the logic somewhere else besides the UI class?
+		int starScore = 0;
+
+		if (score < 0) {
+			starScore += 2;
+		} else if (score == 0) {
+			starScore += 1;
+		}
+
+		if (gameStats.GetTimePlayed() < ((float)(CourseCreator.Course.Count) * 2.0f)) {
+			starScore += 2;
+		} else if (gameStats.GetTimePlayed() < ((float)(CourseCreator.Course.Count) * 5.0f)) {
+			starScore += 1;
+		}
+
+		if (starScore > 4) {
+			starScore = 4;
+		} else if (starScore == 0) {
+			starScore = 1;
+		}
+
+		for (int i = 0; i < starScore; i++) {
+			Instance.m_starsEmpty[i].SetActive(false);
+		}
 	}
 
 	public static void OnReset() {
