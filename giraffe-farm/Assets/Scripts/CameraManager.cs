@@ -126,11 +126,12 @@ public class CameraManager : MonoBehaviour {
 	}
 
 	IEnumerator CameraFadeOutCoroutine () {
+		UIManager.DisplayCourseControls (false);
 		VignetteAndChromaticAberration vignette = Camera.main.gameObject.GetComponent<VignetteAndChromaticAberration> ();
 		float t = 0.0f;
 		while(t < 1.01f) {
 			vignette.intensity = Mathf.Lerp(0.0f, 1.0f, t / 1.0f);
-			t += 0.5f * Time.deltaTime;
+			t += 0.75f * Time.deltaTime;
 			yield return null;
 		}	
 
@@ -146,9 +147,11 @@ public class CameraManager : MonoBehaviour {
 		float t = 0.0f;
 		while(t < 1.01f) {
 			vignette.intensity = Mathf.Lerp(1.0f, 0.0f, t / 1.0f);
-			t += 0.5f * Time.deltaTime;
+			t += 0.75f * Time.deltaTime;
 			yield return null;
-		}	
+		}
+
+		UIManager.DisplayCourseControls (true);
 	}
 
 	IEnumerator BackgroundBlurOutCoroutine() {

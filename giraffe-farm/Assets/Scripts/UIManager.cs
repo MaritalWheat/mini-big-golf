@@ -106,4 +106,10 @@ public class UIManager : MonoBehaviour {
 		//Instance.m_powerBar.gameObject.SetActive (showControls);
 		Instance.m_displayCameraNavigatorAnchor = showControls;
 	}
+
+	public static void DisplayCourseControls(bool showControls) {
+		Instance.m_coursePar.gameObject.SetActive (showControls);
+		Instance.m_startGameButton.gameObject.SetActive (showControls);
+		//Instance.m_title.gameObject.SetActive (showControls);
+	}
 }
