@@ -21,6 +21,7 @@ public class CourseCreator : MonoBehaviour {
 
 	public static List<GameObject> Course { get { return Instance.m_course; } }
 	public static int CoursePar { get { return Instance.m_coursePar; } }
+	public static int CourseID { get { return Instance.m_seed; } }
 
     private enum Direction
     {
@@ -148,6 +149,7 @@ public class CourseCreator : MonoBehaviour {
 		}
 		CameraManager.SetCameraPreGamePosition();
 		UIManager.SetCoursePar (m_coursePar);
+		UIManager.SetCourseBestScore (m_seed);
 		Debug.Log("Course par: " + m_coursePar);
 	}
 

@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour {
 
 	public Text m_coursePar;
 	public Text m_hitCounter;
+	public Text m_bestScore;
 	public Text m_postGameHitCount;
 	public Text m_postGameTimeStat;
 	public Text m_title;
@@ -45,6 +46,19 @@ public class UIManager : MonoBehaviour {
 		Instance.m_coursePar.text = "PAR: " + coursePar;
 	}
 
+	public static void SetCourseBestScore(int courseID) {
+		if (!DataManager.TryGetCourseBestScore (courseID)) {
+			Instance.m_bestScore.text = "BEST: --";
+		} else {
+			int score = DataManager.GetCourseBestScore(courseID);
+			if (score > 0) {
+				Instance.m_bestScore.text = "BEST: +" + (score);
+			} else {
+				Instance.m_bestScore.text = "BEST: " + (score);
+			}
+		}
+	}
+
 	public static void SetupPregame() {
 		Instance.m_hitCounter.gameObject.SetActive (false);
 		Instance.m_pauseGameButton.gameObject.SetActive (false);
@@ -53,6 +67,7 @@ public class UIManager : MonoBehaviour {
 		Instance.m_pauseMenu.gameObject.SetActive (false);
 		Instance.m_powerBar.gameObject.SetActive (false);
 		Instance.m_coursePar.gameObject.SetActive (true);
+		Instance.m_bestScore.gameObject.SetActive (true);
 		Instance.m_startGameButton.gameObject.SetActive (true);
 		Instance.m_title.gameObject.SetActive (true);
 	}
@@ -61,6 +76,7 @@ public class UIManager : MonoBehaviour {
 		Instance.m_startGameButton.gameObject.SetActive (false);
 		Instance.m_title.gameObject.SetActive (false);
 		Instance.m_coursePar.gameObject.SetActive (false);
+		Instance.m_bestScore.gameObject.SetActive (false);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_pauseGameButton.gameObject.SetActive (true);
@@ -84,6 +100,7 @@ public class UIManager : MonoBehaviour {
 
 		//set stats
 		int score = gameStats.GetNumHits () - CourseCreator.CoursePar;
+		DataManager.SaveCourseBestScore (CourseCreator.CourseID, score);
 		string scoreText = "";
 		if (score > 0) {
 			scoreText += "+" + score;
@@ -154,6 +171,7 @@ public class UIManager : MonoBehaviour {
 
 	public static void DisplayCourseControls(bool showControls) {
 		Instance.m_coursePar.gameObject.SetActive (showControls);
+		Instance.m_bestScore.gameObject.SetActive (showControls);
 		Instance.m_startGameButton.gameObject.SetActive (showControls);
 		//Instance.m_title.gameObject.SetActive (showControls);
 	}
