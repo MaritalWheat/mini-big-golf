@@ -96,9 +96,12 @@ public class GameManager : MonoBehaviour {
 		CameraManager.HardReset ();
 	}
 
-	public static void EndGame() {
+	public static void EndGameImmediate() {
 		Instance.m_currentState = GameState.Ended;
+		UIManager.SetupPostGameImmediate ();
+	}
 
+	public static void EndGame() {
 		float timePlayed = (Time.time - Instance.m_gameStartTime) - Instance.m_gamePauseTotalTime;
 		UIManager.SetupPostGame (new GameStats(timePlayed, PlayerManager.Hits));
 		CameraManager.BlurBackgroundOnPause ();

@@ -67,9 +67,12 @@ public class UIManager : MonoBehaviour {
 		Instance.m_powerBar.gameObject.SetActive (true);
 	}
 
+	public static void SetupPostGameImmediate() {
+		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
+	}
+
 	public static void SetupPostGame(GameManager.GameStats gameStats) {
 		Instance.m_hitCounter.gameObject.SetActive (false);
-		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (false);
 		Instance.m_powerBar.gameObject.SetActive (false);
 		Instance.m_pauseGameButton.gameObject.SetActive (false);
 		Instance.m_postCourseStats.gameObject.SetActive (true);
@@ -142,6 +145,8 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public static void DisplayBallControls(bool showControls) {
+		if (GameManager.CurrentGameState == GameManager.GameState.Ended)
+			return;
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (showControls);
 		//Instance.m_powerBar.gameObject.SetActive (showControls);
 		Instance.m_displayCameraNavigatorAnchor = showControls;
