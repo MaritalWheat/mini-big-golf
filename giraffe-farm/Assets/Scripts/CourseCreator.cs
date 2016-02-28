@@ -37,6 +37,8 @@ public class CourseCreator : MonoBehaviour {
 		if (Instance == null) {
 			Instance = this;
 		}
+
+		m_seed = DataManager.LoadLastCourse ();
     }
 	
 	void Update () {
@@ -49,6 +51,7 @@ public class CourseCreator : MonoBehaviour {
 	public void GenerateNextCourse() {
 		//this is unsafe and timing not guaranteed, should fix but quick test
 		m_seed++;
+		DataManager.SaveLastCourse (m_seed);
 		CameraManager.FadeCamera();
 	}
 
@@ -56,6 +59,7 @@ public class CourseCreator : MonoBehaviour {
 	public void GeneratePreviousCourse() {
 		//this is unsafe and timing not guaranteed, should fix but quick test
 		m_seed--;
+		DataManager.SaveLastCourse (m_seed);
 		CameraManager.FadeCamera();
 	}
 

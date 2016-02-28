@@ -31,4 +31,17 @@ public class DataManager : MonoBehaviour {
 		Debug.Log("Saved: " + PlayerPrefs.GetInt(courseID.ToString()));
 		PlayerPrefs.Save ();
 	}
+
+	public static void SaveLastCourse(int courseID) {
+		PlayerPrefs.SetInt ("LastCourse", courseID);
+		PlayerPrefs.Save ();
+	}
+
+	public static int LoadLastCourse() {
+		if (!PlayerPrefs.HasKey ("LastCourse")) {
+			return 12345;
+		} else {
+			return PlayerPrefs.GetInt ("LastCourse");
+		}
+	}
 }
