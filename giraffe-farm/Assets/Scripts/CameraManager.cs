@@ -13,6 +13,7 @@ public class CameraManager : MonoBehaviour {
 	private float m_radiusSpeed = 0.5f;
 	private bool m_initialGameStart;
 	private bool m_gameCameraPositioned;
+	private bool m_ignoreGameState;
 	private float m_targetSaturation;
 
 	public static bool GameCameraPositioned { get { return Instance.m_gameCameraPositioned; } }
@@ -29,7 +30,7 @@ public class CameraManager : MonoBehaviour {
 	
 	void FixedUpdate () {
 		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted || GameManager.CurrentGameState == 
-			GameManager.GameState.Paused) {
+			GameManager.GameState.Paused || (GameManager.CurrentGameState == GameManager.GameState.Ended && !m_ignoreGameState)) {
 			m_autoCamInstance.transform.RotateAround (m_courseCenter, Vector3.up, 4.0f * Time.deltaTime);
 			Vector3 desiredPosition = (m_autoCamInstance.transform.position - m_courseCenter).normalized * m_radius + m_courseCenter;
 
@@ -107,6 +108,10 @@ public class CameraManager : MonoBehaviour {
 
 	private void UnPauseWhileRolling() {
 		m_autoCamInstance.SetOverrideForMovingPause ();
+	}
+
+	public static void SetIgnoreGameState(bool ignore) {
+		Instance.m_ignoreGameState = ignore;
 	}
 
 	public static void FadeCameraOnLaunch() {
