@@ -14,6 +14,10 @@ public class PlayerManager : MonoBehaviour {
 	private bool m_isRolling;
 	private bool m_hasBeenHit;
 
+	public static GameObject Ball {
+		get { return Instance.m_ball; }
+	}
+
 	public static int Hits {
 		get { return Instance.m_hits; }
 	}

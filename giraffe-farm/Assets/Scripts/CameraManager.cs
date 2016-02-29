@@ -34,11 +34,14 @@ public class CameraManager : MonoBehaviour {
 			m_autoCamInstance.transform.RotateAround (m_courseCenter, Vector3.up, 4.0f * Time.deltaTime);
 			Vector3 desiredPosition = (m_autoCamInstance.transform.position - m_courseCenter).normalized * m_radius + m_courseCenter;
 
-			/*if(GameManager.CurrentGameState == GameManager.GameState.Paused && m_autoCamInstance.transform.position.y < 2.0f) {
-				Debug.Log("artifically increasing");
-				Instance.m_autoCamInstance.transform.LookAt (m_cameraMarker);
-				desiredPosition.y += 6.0f;
-			}*/
+			//this is pretty hacky...
+			if((GameManager.CurrentGameState == GameManager.GameState.Paused || GameManager.CurrentGameState == GameManager.GameState.Ended) 
+			   && m_autoCamInstance.transform.position.y < 2.0f) {
+				//Debug.Log("artifically increasing");
+				//Instance.m_autoCamInstance.transform.LookAt (m_cameraMarker);
+
+				desiredPosition.y += 0.5f;
+			}
 
 			if (Mathf.Approximately (m_autoCamInstance.transform.position.x - desiredPosition.x, 0.0f)) {
 				if (m_radius == m_radiusMin) {
@@ -49,7 +52,14 @@ public class CameraManager : MonoBehaviour {
 			}
 
 			Instance.m_autoCamInstance.transform.position = Vector3.MoveTowards (m_autoCamInstance.transform.position, desiredPosition, Time.deltaTime * m_radiusSpeed);   
-			//Instance.m_autoCamInstance.transform.LookAt (m_courseCenter);
+			//Instance.m_autoCamInstance.transform.ro (m_courseCenter);
+
+			Vector3 targetPoint = m_courseCenter;
+			if (PlayerManager.Ball != null) {
+				targetPoint = PlayerManager.Ball.transform.position;
+			}
+			Quaternion targetRotation = Quaternion.LookRotation(targetPoint - Instance.m_autoCamInstance.transform.position, Vector3.up);
+			Instance.m_autoCamInstance.transform.rotation = Quaternion.Slerp(Instance.m_autoCamInstance.transform.rotation, targetRotation, Time.deltaTime * 0.15f);  
 		} else if (Input.GetKey (KeyCode.Q)) {
 			m_autoCamInstance.transform.RotateAround (GameObject.FindGameObjectWithTag("Player").transform.position, Vector3.up, 4.0f * Time.deltaTime);
 		} else {
