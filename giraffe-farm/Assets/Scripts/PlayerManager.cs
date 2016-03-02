@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerManager : MonoBehaviour {
 
@@ -7,6 +8,9 @@ public class PlayerManager : MonoBehaviour {
     public GameObject m_ballPrefab;
     private GameObject m_startMarker;
 	private GameObject m_ball;
+
+	[SerializeField]
+	private List<AudioClip> m_ballHitSounds;
 
 	private int m_hits;
 	private Vector3 m_savedVelocity;
@@ -134,6 +138,11 @@ public class PlayerManager : MonoBehaviour {
 	public static void SetRollState(bool isRolling) {
 		if (isRolling && !Instance.m_hasBeenHit) {
 			Instance.m_hasBeenHit = true;
+		}
+
+		//play ball hit sound
+		if (isRolling) {
+			AudioManager.PlaySoundAtObject (PlayerManager.Ball, Instance.m_ballHitSounds [Random.Range (0, Instance.m_ballHitSounds.Count)]);
 		}
 
 		Instance.m_isRolling = isRolling;
