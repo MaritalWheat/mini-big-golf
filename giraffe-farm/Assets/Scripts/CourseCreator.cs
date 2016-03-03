@@ -78,6 +78,16 @@ public class CourseCreator : MonoBehaviour {
 		//MASSIVELY important - "map a day" concept will be fueled by server sending all clients the same seed, or
 		//friend can exchange a seed value (opaquely), or leaderboards can be seed based
 		Random.seed = m_seed;
+
+		int determiner = Random.Range (0, 10);
+
+		if (determiner <= 5) {
+			m_courseSize = Random.Range (3, 6);
+		} else if (determiner <= 8) {
+			m_courseSize = Random.Range (6, 10);
+		} else if (determiner == 10) {
+			m_courseSize = Random.Range (10, 15);
+		}
 		
 		m_course.Add(GameObject.Instantiate(m_blockTypesForward[0], Vector3.zero, Quaternion.identity) as GameObject);
 		for (int i = 0; i < m_courseSize; i++)

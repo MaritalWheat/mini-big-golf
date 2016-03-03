@@ -49,7 +49,7 @@ public class PlayerManager : MonoBehaviour {
 			if (rigidbody.IsSleeping ()) {
 				rigidbody.WakeUp ();
 			}
-			if (rigidbody.velocity.magnitude < 0.15f) {
+			if (rigidbody.velocity.magnitude < 0.01f) {
 				rigidbody.Sleep();
 				rigidbody.velocity = Vector3.zero;
 
