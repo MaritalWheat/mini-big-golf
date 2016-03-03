@@ -17,6 +17,10 @@ public class PlayerManager : MonoBehaviour {
 	private Vector3 m_savedAngularVelocity;
 	private bool m_isRolling;
 	private bool m_hasBeenHit;
+	private bool m_hasStopped;
+	private bool m_mayHaveStopped;
+	private float m_stopTimer = 0.0f;
+
 
 	public static GameObject Ball {
 		get { return Instance.m_ball; }
@@ -45,17 +49,26 @@ public class PlayerManager : MonoBehaviour {
 		    GameManager.GameState.Paused) return;
 
 		if (m_ball != null) {
-			Rigidbody rigidbody = m_ball.GetComponent<Rigidbody>();
-			if (rigidbody.IsSleeping ()) {
-				rigidbody.WakeUp ();
-			}
-			if (rigidbody.velocity.magnitude < 0.01f) {
+			Rigidbody rigidbody = m_ball.GetComponent<Rigidbody> ();
+
+			if (rigidbody.velocity.magnitude < 0.1f && (!m_hasStopped && !m_mayHaveStopped)) {
+				m_mayHaveStopped = true;
+			} else if (rigidbody.velocity.magnitude < 0.1f && m_mayHaveStopped) {
+				m_stopTimer += Time.deltaTime;
+				if (m_stopTimer > 0.3f) {
+					m_mayHaveStopped = false;
+					m_stopTimer = 0.0f;
+					m_hasStopped = true;
+				}
+			} else if (rigidbody.velocity.magnitude < 0.1f && m_hasStopped) {
 				rigidbody.Sleep();
 				rigidbody.velocity = Vector3.zero;
-
+				
 				if (m_isRolling) {
 					PlayerManager.SetRollState(false);
 				}
+
+				m_hasStopped = false;
 			}
 		}
 	}
