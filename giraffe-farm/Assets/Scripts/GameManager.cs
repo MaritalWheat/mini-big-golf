@@ -29,7 +29,9 @@ public class GameManager : MonoBehaviour {
 	private float m_gameStartTime;
 	private float m_gamePauseStartTime;
 	private float m_gamePauseTotalTime;
-	
+
+	[SerializeField] private AudioClip m_ballInHoleAudioClip;
+
 	public static event GameResetEventHandler GameReset;
 
 	public static GameState CurrentGameState {
@@ -98,6 +100,7 @@ public class GameManager : MonoBehaviour {
 
 	public static void EndGameImmediate() {
 		Instance.m_currentState = GameState.Ended;
+		AudioManager.PlaySoundAtObject (PlayerManager.Ball, Instance.m_ballInHoleAudioClip);
 		UIManager.SetupPostGameImmediate ();
 		CameraManager.SetIgnoreGameState (true);
 	}

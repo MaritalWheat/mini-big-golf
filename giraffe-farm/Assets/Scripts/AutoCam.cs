@@ -38,7 +38,11 @@ namespace UnityStandardAssets.Cameras
 
 				// velocity is high enough, so we'll use the target's velocty
 				if (CameraManager.GameCameraPositioned) {
-					targetForward = targetRigidbody.velocity.normalized;
+					if (PlayerManager.IsRolling) {
+						targetForward = targetRigidbody.velocity.normalized;
+					} else {
+						targetForward = Vector3.zero;
+					}
 				} else if (PlayerManager.HasBeenHit && PlayerManager.IsRolling && !CameraManager.GameCameraPositioned && 
 				           !(m_postPause)) {
 					targetForward = targetRigidbody.velocity.normalized;
