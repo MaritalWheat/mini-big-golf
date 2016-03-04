@@ -38,7 +38,7 @@ public class SwingHandler : MonoBehaviour {
 	
 	void Update () {
 		if (GameManager.CurrentGameState == GameManager.GameState.Unstarted || GameManager.CurrentGameState ==
-			GameManager.GameState.Paused || m_ignoreInput) {
+			GameManager.GameState.Paused || m_ignoreInput || PlayerManager.IsRolling) {
 			m_currentSwingState = SwingState.Unstarted;
 			return;
 		}
