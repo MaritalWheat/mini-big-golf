@@ -5,8 +5,14 @@ using UnityEngine.SocialPlatforms;
 
 public class GPGSRouter : MonoBehaviour {
 
-	// Use this for initialization
+	private static GPGSRouter Instance;
+
+
 	void Start () {
+		if (Instance == null) {
+			Instance = this;
+		}
+
 		// authenticate user:
 		GooglePlayGames.PlayGamesPlatform.Activate();
 		Social.localUser.Authenticate((bool success) => {
@@ -21,8 +27,15 @@ public class GPGSRouter : MonoBehaviour {
 		});
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+
+
+	public static void ReportCoursePlayed(int coursesPlayed) {
+		// post score 12345 to leaderboard ID "Cfji293fjsie_QA")
+		//Debug.Log ("User authenticated - leaderboard": + Social.localUser.authenticated);
+		GooglePlayGames.PlayGamesPlatform.Activate();
+
+		Social.ReportScore (coursesPlayed, "CggIhKi7mWoQAhAF", (bool reportSuccess) => {
+			PlayGamesPlatform.Instance.ShowLeaderboardUI("CggIhKi7mWoQAhAF");
+		});
 	}
 }

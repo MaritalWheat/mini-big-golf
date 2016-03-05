@@ -112,6 +112,7 @@ public class GameManager : MonoBehaviour {
 
 	public static void EndGame() {
 		float timePlayed = (Time.time - Instance.m_gameStartTime) - Instance.m_gamePauseTotalTime;
+		DataManager.IncrementCoursesPlayedCount ();
 		UIManager.SetupPostGame (new GameStats(timePlayed, PlayerManager.Hits));
 		CameraManager.BlurBackgroundOnPause ();
 		CameraManager.SetIgnoreGameState (false);

@@ -44,4 +44,19 @@ public class DataManager : MonoBehaviour {
 			return PlayerPrefs.GetInt ("LastCourse");
 		}
 	}
+
+	public static void IncrementCoursesPlayedCount() {
+		int coursesPlayed = GetCoursesPlayedCount ();
+		coursesPlayed++;
+		PlayerPrefs.SetInt ("CoursesPlayed", coursesPlayed);
+		GPGSRouter.ReportCoursePlayed (coursesPlayed);
+	}
+
+	public static int GetCoursesPlayedCount() {
+		if (!PlayerPrefs.HasKey ("CoursesPlayed")) {
+			return 0;
+		} else {
+			return PlayerPrefs.GetInt ("CoursesPlayed");
+		}
+	}
 }
