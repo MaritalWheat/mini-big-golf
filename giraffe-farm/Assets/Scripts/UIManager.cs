@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour {
 
 	public Button m_startGameButton;
 	public Button m_pauseGameButton;
+	public Button m_achievementsButton;
+	public Button m_leaderboardsButton;
 
 	public GameObject m_postCourseStats;
 	public GameObject m_cameraNavigatorAnchor;
@@ -70,6 +72,8 @@ public class UIManager : MonoBehaviour {
 		Instance.m_bestScore.gameObject.SetActive (true);
 		Instance.m_startGameButton.gameObject.SetActive (true);
 		Instance.m_title.gameObject.SetActive (true);
+		Instance.m_achievementsButton.gameObject.SetActive (true);
+		Instance.m_leaderboardsButton.gameObject.SetActive (true);
 	}
 
 	public static void OnStart() {
@@ -77,6 +81,8 @@ public class UIManager : MonoBehaviour {
 		Instance.m_title.gameObject.SetActive (false);
 		Instance.m_coursePar.gameObject.SetActive (false);
 		Instance.m_bestScore.gameObject.SetActive (false);
+		Instance.m_achievementsButton.gameObject.SetActive (false);
+		Instance.m_leaderboardsButton.gameObject.SetActive (false);
 		Instance.m_cameraNavigatorAnchor.gameObject.SetActive (true);
 		Instance.m_hitCounter.gameObject.SetActive (true);
 		Instance.m_pauseGameButton.gameObject.SetActive (true);

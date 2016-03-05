@@ -30,12 +30,17 @@ public class GPGSRouter : MonoBehaviour {
 
 
 	public static void ReportCoursePlayed(int coursesPlayed) {
-		// post score 12345 to leaderboard ID "Cfji293fjsie_QA")
-		//Debug.Log ("User authenticated - leaderboard": + Social.localUser.authenticated);
-		GooglePlayGames.PlayGamesPlatform.Activate();
-
 		Social.ReportScore (coursesPlayed, "CggIhKi7mWoQAhAF", (bool reportSuccess) => {
-			PlayGamesPlatform.Instance.ShowLeaderboardUI("CggIhKi7mWoQAhAF");
 		});
+	}
+
+	//called from UI button
+	public void ShowAchievementsUI() {
+		Social.Active.ShowAchievementsUI ();
+	}
+
+	//called from UI button
+	public void ShowLeaderboardsUI() {
+		Social.Active.ShowLeaderboardUI ();
 	}
 }
