@@ -141,17 +141,6 @@ Pass {
       
       ENDCG
   }
-// 2: simulates more chromatic aberration effects
-Pass {
-	  ZTest Always Cull Off ZWrite Off
-
-      CGPROGRAM
-      
-      #pragma vertex vert
-      #pragma fragment fragComplex
-      
-      ENDCG
-  }  
 }
 
 Fallback off
