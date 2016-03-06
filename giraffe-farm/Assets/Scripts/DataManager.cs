@@ -5,6 +5,8 @@ public class DataManager : MonoBehaviour {
 
 	public static DataManager Instance;
 
+	private int m_waterDeaths = 0;
+
 	void Start () {
 		if (Instance == null) {
 			Instance = this;
@@ -46,10 +48,27 @@ public class DataManager : MonoBehaviour {
 	}
 
 	public static void IncrementCoursesPlayedCount() {
+		GPGSRouter.Increment (GPGSIds.achievement_just_a_taste, 1);
 		int coursesPlayed = GetCoursesPlayedCount ();
+		if (coursesPlayed == 0 || !Instance.GetFirstCourseLogged()) {
+			PlayerPrefs.SetInt("FirstCourseLogged", 1);
+			GPGSRouter.Unlock(GPGSIds.achievement_first_isnt_the_worst);
+		}
 		coursesPlayed++;
 		PlayerPrefs.SetInt ("CoursesPlayed", coursesPlayed);
 		GPGSRouter.ReportCoursePlayed (coursesPlayed);
+	}
+
+	public static void IncrementCoursesUnderPar() {
+		GPGSRouter.Increment (GPGSIds.achievement_fast_five, 1);
+		int coursesUnderPar = Instance.GetCoursesUnderParCount ();
+		coursesUnderPar++;
+		PlayerPrefs.SetInt ("CoursesPlayed", coursesUnderPar);
+		GPGSRouter.ReportCourseUnderPar (coursesUnderPar);
+	}
+
+	public static void LogPerfectCourse() {
+		GPGSRouter.Unlock (GPGSIds.achievement_the_critics_say__4_stars);
 	}
 
 	public static int GetCoursesPlayedCount() {
@@ -57,6 +76,29 @@ public class DataManager : MonoBehaviour {
 			return 0;
 		} else {
 			return PlayerPrefs.GetInt ("CoursesPlayed");
+		}
+	}
+
+	public static void LogWaterDeath() {
+		Instance.m_waterDeaths++;
+		if (Instance.m_waterDeaths >= 5) {
+			GPGSRouter.Unlock(GPGSIds.achievement_liquid_aloha);
+		}
+	}
+
+	public static void Reset() {
+		Instance.m_waterDeaths = 0;
+	}
+
+	private bool GetFirstCourseLogged() {
+		return PlayerPrefs.HasKey("FirstCourseLogged");
+	}
+
+	private int GetCoursesUnderParCount() {
+		if (!PlayerPrefs.HasKey ("CoursesUnderPar")) {
+			return 0;
+		} else {
+			return PlayerPrefs.GetInt ("CoursesUnderPar");
 		}
 	}
 }

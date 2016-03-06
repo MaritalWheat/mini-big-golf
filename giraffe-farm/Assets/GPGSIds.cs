@@ -24,10 +24,12 @@
 
 public static class GPGSIds
 {
+        public const string leaderboard_courses_under_par = "CggIhKi7mWoQAhAE"; // <GPGSID>
         public const string achievement_just_a_taste = "CggIhKi7mWoQAhAD"; // <GPGSID>
         public const string leaderboard_courses_completed = "CggIhKi7mWoQAhAF"; // <GPGSID>
         public const string achievement_fast_five = "CggIhKi7mWoQAhAB"; // <GPGSID>
-        public const string leaderboard_courses_under_par = "CggIhKi7mWoQAhAE"; // <GPGSID>
+        public const string achievement_liquid_aloha = "CggIhKi7mWoQAhAJ"; // <GPGSID>
+        public const string achievement_first_isnt_the_worst = "CggIhKi7mWoQAhAI"; // <GPGSID>
         public const string achievement_the_critics_say__4_stars = "CggIhKi7mWoQAhAC"; // <GPGSID>
 
 }

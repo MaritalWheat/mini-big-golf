@@ -45,10 +45,11 @@ public class GameManager : MonoBehaviour {
 		Paused
 	}
 
-	void OnGUI()
+	//debug info
+	/*void OnGUI()
 	{
 		GUI.Label(new Rect(0, 0, 100, 100), ((int)(1.0f / Time.smoothDeltaTime)).ToString());        
-	}
+	}*/
 
 	void Start () {
 		if (Instance == null) {
@@ -116,6 +117,7 @@ public class GameManager : MonoBehaviour {
 		UIManager.SetupPostGame (new GameStats(timePlayed, PlayerManager.Hits));
 		CameraManager.BlurBackgroundOnPause ();
 		CameraManager.SetIgnoreGameState (false);
+		DataManager.Reset ();
 	}
 
 	public static void ResetGame() {
@@ -148,6 +150,7 @@ public class GameManager : MonoBehaviour {
 		UIManager.SetupPregame ();
 		CameraManager.HardReset ();
 		CameraManager.UnblurBackgroundOnPause ();
+		DataManager.Reset ();
 		GameReset ();
 	}
 }

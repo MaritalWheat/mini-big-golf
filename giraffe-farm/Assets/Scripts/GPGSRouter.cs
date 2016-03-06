@@ -27,10 +27,28 @@ public class GPGSRouter : MonoBehaviour {
 		});
 	}
 	
-
-
+	public static void Increment(string achievementID, int incrementBy) {
+		// increment achievement (achievement ID "Cfjewijawiu_QA") by 5 steps
+		PlayGamesPlatform.Instance.IncrementAchievement(
+			achievementID, incrementBy, (bool success) => {
+			// handle success or failure
+		});
+	}
+	
+	public static void Unlock(string achievementID) {
+		// unlock achievement (achievement ID "Cfjewijawiu_QA")
+		Social.ReportProgress(achievementID, 100.0f, (bool success) => {
+			// handle success or failure
+		});
+	}
+	
 	public static void ReportCoursePlayed(int coursesPlayed) {
-		Social.ReportScore (coursesPlayed, "CggIhKi7mWoQAhAF", (bool reportSuccess) => {
+		Social.ReportScore (coursesPlayed, GPGSIds.leaderboard_courses_completed, (bool reportSuccess) => {
+		});
+	}
+
+	public static void ReportCourseUnderPar(int coursesUnderPar) {
+		Social.ReportScore (coursesUnderPar, GPGSIds.leaderboard_courses_under_par, (bool reportSuccess) => {
 		});
 	}
 

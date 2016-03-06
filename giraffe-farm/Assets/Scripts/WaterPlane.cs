@@ -11,6 +11,7 @@ public class WaterPlane : MonoBehaviour {
 			AudioManager.PlaySoundAtObject(this.gameObject, m_waterSplashAudioClip);
 			PlayerManager.Reset ();
 			CameraManager.HardReset ();
+			DataManager.LogWaterDeath();
 		}
 	}
 }

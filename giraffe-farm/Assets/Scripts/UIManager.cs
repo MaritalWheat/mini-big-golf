@@ -111,6 +111,7 @@ public class UIManager : MonoBehaviour {
 		if (score > 0) {
 			scoreText += "+" + score;
 		} else {
+			DataManager.IncrementCoursesUnderPar();
 			scoreText += score;
 		}
 		Instance.m_postGameHitCount.text = scoreText;
@@ -131,8 +132,9 @@ public class UIManager : MonoBehaviour {
 			starScore += 1;
 		}
 
-		if (starScore > 4) {
+		if (starScore >= 4) {
 			starScore = 4;
+			DataManager.LogPerfectCourse();
 		} else if (starScore == 0) {
 			starScore = 1;
 		}
