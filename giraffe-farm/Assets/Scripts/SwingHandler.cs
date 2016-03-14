@@ -21,6 +21,10 @@ public class SwingHandler : MonoBehaviour {
 	private Vector3 m_camForward; // The current forward direction of the camera
 	private bool m_ignoreInput;
 
+	[SerializeField] private GameObject m_arrowPrefab;
+	private GameObject m_arrow;
+	private GameObject m_crumbOne;
+	private GameObject m_crumbTwo;
 	private static SwingHandler Instance; 
 
 	public static bool IgnoreInput {
@@ -34,6 +38,12 @@ public class SwingHandler : MonoBehaviour {
 			Instance = this;
 		}
 		m_currentSwingState = SwingState.Unstarted;
+		m_arrow = GameObject.Instantiate (m_arrowPrefab);
+		m_arrow.transform.localScale = m_arrow.transform.localScale * 0.6f;
+		m_crumbOne = GameObject.Instantiate (m_arrowPrefab);
+		m_crumbOne.transform.localScale = m_crumbOne.transform.localScale * 0.8f;
+		m_crumbTwo = GameObject.Instantiate (m_arrowPrefab);
+		m_crumbTwo.transform.localScale = m_crumbTwo.transform.localScale * 1.0f;
 	}
 	
 	void Update () {
@@ -63,19 +73,53 @@ public class SwingHandler : MonoBehaviour {
 		if (m_cam == null || m_ballRigidBody == null)
 			return;
 
-        if (m_currentSwingState == SwingState.Ended)
-        {
-            float velocity = Vector3.Distance(m_swingInputStartPosition, m_swingInputEndPosition) / m_swingTime;
-            //Debug.Log("Acceleration: " + velocity);
-            
-			m_camForward = Vector3.Scale(m_cam.forward, new Vector3(1, 0, 1)).normalized;
-			m_move = (m_swingInputDirection.z * m_camForward + m_swingInputDirection.x * m_cam.right).normalized;
-			m_ballRigidBody.AddForce(m_move * velocity);
-            m_currentSwingState = SwingState.Unstarted;
-			PlayerManager.SetRollState(true);
-			PlayerManager.IncrementHits();
-        }
+		if (m_currentSwingState != SwingState.Started) {
+			m_arrow.SetActive(false);
+			m_crumbOne.SetActive(false);
+			m_crumbTwo.SetActive(false);
+		}
 
+        if (m_currentSwingState == SwingState.Ended) {
+			float velocity = (Vector3.Distance (m_swingInputStartPosition, m_swingInputEndPosition) * 4.0f) / (0.25f * Screen.height);
+            
+			m_camForward = Vector3.Scale (m_cam.forward, new Vector3 (1, 0, 1));
+			m_move = (m_swingInputDirection.z * m_camForward + m_swingInputDirection.x * m_cam.right);
+			m_ballRigidBody.AddForce (m_move * velocity);
+			m_currentSwingState = SwingState.Unstarted;
+			PlayerManager.SetRollState (true);
+			PlayerManager.IncrementHits ();
+		} else if (m_currentSwingState == SwingState.Started) {
+
+			Vector3 currPos = Input.mousePosition;
+			Vector3 rawDirection = m_swingInputStartPosition - currPos;
+			Vector3 swingInputDir = new Vector3(rawDirection.x, 0.0f, rawDirection.y);
+			
+			float velocity = Vector3.Distance (m_swingInputStartPosition, currPos) / (0.25f * Screen.height);
+			
+			Vector3 camForward = Vector3.Scale (m_cam.forward, new Vector3 (1, 0, 1));
+			Vector3 moveVector = (swingInputDir.z * camForward + swingInputDir.x * m_cam.right);
+			Vector3 target = PlayerManager.Ball.transform.position + moveVector.normalized;
+			target.y += 0.02f;
+			m_arrow.transform.position = target;
+			target = PlayerManager.Ball.transform.position + (moveVector.normalized * 0.67f);
+			target.y += 0.02f;
+			m_crumbOne.transform.position = target;
+			target = PlayerManager.Ball.transform.position + (moveVector.normalized * 0.33f);
+			target.y += 0.02f;
+			m_crumbTwo.transform.position = target;
+			m_crumbTwo.transform.LookAt(m_arrow.transform.position);
+			m_crumbOne.transform.LookAt(m_arrow.transform.position);
+			target = m_arrow.transform.position;
+			target = PlayerManager.Ball.transform.position + (moveVector.normalized * 1.33f);
+			target.y += 0.02f;
+			m_arrow.transform.LookAt(target);
+
+			m_arrow.SetActive(true);
+			m_crumbOne.SetActive(true);
+			m_crumbTwo.SetActive(true);
+			
+		}
+		
 		PowerBar.SetFill (m_ballRigidBody.velocity.magnitude / 5.0f);
     }
 
@@ -84,7 +128,7 @@ public class SwingHandler : MonoBehaviour {
 		if (GameManager.CurrentGameState == GameManager.GameState.Ended) {
 			return SwingState.Unstarted;
 		} else if (m_currentSwingState == SwingState.Unstarted) {
-            if (Input.GetMouseButton(0)) {
+			if (Input.GetMouseButton(0)) {
                 m_swingInputStartPosition = Input.mousePosition;
                 m_swingTime = 0.0f;
                 return SwingState.Started;
@@ -93,7 +137,7 @@ public class SwingHandler : MonoBehaviour {
 			if (Input.GetMouseButtonUp(0)) {
                 m_swingInputEndPosition = Input.mousePosition;
                 Vector3 rawDirection = m_swingInputStartPosition - m_swingInputEndPosition;
-                m_swingInputDirection = new Vector3(-rawDirection.x, 0.0f, -rawDirection.y);
+                m_swingInputDirection = new Vector3(rawDirection.x, 0.0f, rawDirection.y);
                 return SwingState.Ended;
 			} else {
                 m_swingTime += Time.deltaTime;
