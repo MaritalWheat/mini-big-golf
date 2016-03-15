@@ -81,7 +81,10 @@ public class SwingHandler : MonoBehaviour {
 
         if (m_currentSwingState == SwingState.Ended) {
 			float velocity = (Vector3.Distance (m_swingInputStartPosition, m_swingInputEndPosition) * 4.0f) / (0.25f * Screen.height);
-            
+            if (velocity > 6.0f) {
+				velocity = 6.0f;
+			}
+
 			m_camForward = Vector3.Scale (m_cam.forward, new Vector3 (1, 0, 1));
 			m_move = (m_swingInputDirection.z * m_camForward + m_swingInputDirection.x * m_cam.right);
 			m_ballRigidBody.AddForce (m_move * velocity);
