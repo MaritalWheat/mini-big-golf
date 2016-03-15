@@ -5,34 +5,40 @@ using System.Collections.Generic;
 public class CameraHelper : MonoBehaviour {
 
 	private List<GameObject> m_activeTransparentObjects = new List<GameObject>();
+	private float m_timeDelay;
 
 	void Update () {
-		RaycastHit[] hits;
+		m_timeDelay += Time.deltaTime;
 
-		List<GameObject> lastHits = new List<GameObject> ();
-		if (PlayerManager.Ball != null) {
-			float distance = Vector3.Distance(PlayerManager.Ball.transform.position, this.transform.position);
-			hits = Physics.RaycastAll (transform.position, PlayerManager.Ball.transform.position - this.transform.position, distance);
+		if (m_timeDelay > 0.1f) {
+			m_timeDelay = 0.0f;
+			RaycastHit[] hits;
 
-			for (int i = 0; i < hits.Length; i++) {
-				GameObject curr = hits[i].transform.gameObject;
+			List<GameObject> lastHits = new List<GameObject> ();
+			if (PlayerManager.Ball != null) {
+				float distance = Vector3.Distance (PlayerManager.Ball.transform.position, this.transform.position);
+				hits = Physics.RaycastAll (transform.position, PlayerManager.Ball.transform.position - this.transform.position, distance);
 
-				if (curr.gameObject.name.Contains("Ball")) {
-					Debug.Log("Nothing blocking view to ball.");
-					break;
+				for (int i = 0; i < hits.Length; i++) {
+					GameObject curr = hits [i].transform.gameObject;
+
+					if (curr.gameObject.name.Contains ("Ball")) {
+						Debug.Log ("Nothing blocking view to ball.");
+						break;
+					}
+
+					if (curr.gameObject.name.Contains ("Windmill") || curr.gameObject.name.Contains ("Castle")) {
+						SetTransparent (curr);
+						//inefficient prototype
+						lastHits.Add (curr);
+					}
 				}
 
-				if (curr.gameObject.name.Contains("Windmill") || curr.gameObject.name.Contains("Castle")) {
-					SetTransparent(curr);
-					//inefficient prototype
-					lastHits.Add (curr);
-				}
-			}
-
-			for(int j = 0; j < m_activeTransparentObjects.Count; j++) {
-				GameObject curr = m_activeTransparentObjects[j];
-				if (!lastHits.Contains(curr)) {
-					SetVisible(curr);
+				for (int j = 0; j < m_activeTransparentObjects.Count; j++) {
+					GameObject curr = m_activeTransparentObjects [j];
+					if (!lastHits.Contains (curr)) {
+						SetVisible (curr);
+					}
 				}
 			}
 		}
@@ -56,13 +62,50 @@ public class CameraHelper : MonoBehaviour {
 			}
 		}
 
+		Quaternion bladeRotation = Quaternion.identity;
+		//Vector3 bladePos = Vector3.zero;
+		foreach (GameObject obj in toDeactivate) {
+			//if (obj.gameObject.name.Contains("Windmill")) {
+			Transform[] objChildren = obj.GetComponentsInChildren<Transform>();
+			foreach (Transform objChild in objChildren) {
+				/*if (objChild.gameObject.name.Contains("blade") && objChild.gameObject.name.Contains("base")) {
+						bladeRotation = objChild.rotation;
+						Debug.Log("Getting child rotation: " + bladeRotation + " name: " + objChild.name);
+					}*/
+				MeshRenderer renderer = objChild.GetComponentInChildren<MeshRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false;
+				}
+			}
+			//}
+			//obj.SetActive(false);
+		}
+		
 		foreach (GameObject obj in toActivate) {
+			//obj.SetActive (true);
+			//if (obj.gameObject.name.Contains("Windmill")) {
+			Transform[] objChildren = obj.GetComponentsInChildren<Transform>();
+			foreach (Transform objChild in objChildren) {
+				/*if (objChild.gameObject.name.Contains("blade") && objChild.gameObject.name.Contains("base")) {
+						//objChild.localPosition = bladePos;
+						objChild.rotation = bladeRotation;
+						Debug.Log("Setting child rotation: " + objChild.rotation + " name: " + objChild.name);
+					}*/
+				MeshRenderer renderer = objChild.GetComponentInChildren<MeshRenderer>();
+				if (renderer != null) {
+					renderer.enabled = true;
+				}
+			}
+			//}
+		}
+
+		/*foreach (GameObject obj in toActivate) {
 			obj.SetActive(true);
 		}
 		
 		foreach (GameObject obj in toDeactivate) {
 			obj.SetActive (false);
-		}
+		}*/
 
 		/*Renderer[] rends = curr.GetComponentsInChildren<Renderer>();
 		//Materials[] = rend.materials;
@@ -111,12 +154,41 @@ public class CameraHelper : MonoBehaviour {
 			}
 		}
 
-		foreach (GameObject obj in toActivate) {
-			obj.SetActive(true);
+		Quaternion bladeRotation = Quaternion.identity;
+		//Vector3 bladePos = Vector3.zero;
+		foreach (GameObject obj in toDeactivate) {
+			//if (obj.gameObject.name.Contains("Windmill")) {
+				Transform[] objChildren = obj.GetComponentsInChildren<Transform>();
+				foreach (Transform objChild in objChildren) {
+					/*if (objChild.gameObject.name.Contains("blade") && objChild.gameObject.name.Contains("base")) {
+						bladeRotation = objChild.rotation;
+						Debug.Log("Getting child rotation: " + bladeRotation + " name: " + objChild.name);
+					}*/
+					MeshRenderer renderer = objChild.GetComponentInChildren<MeshRenderer>();
+					if (renderer != null) {
+						renderer.enabled = false;
+					}
+				}
+			//}
+			//obj.SetActive(false);
 		}
 
-		foreach (GameObject obj in toDeactivate) {
-			obj.SetActive (false);
+		foreach (GameObject obj in toActivate) {
+			//obj.SetActive (true);
+			//if (obj.gameObject.name.Contains("Windmill")) {
+				Transform[] objChildren = obj.GetComponentsInChildren<Transform>();
+				foreach (Transform objChild in objChildren) {
+					/*if (objChild.gameObject.name.Contains("blade") && objChild.gameObject.name.Contains("base")) {
+						//objChild.localPosition = bladePos;
+						objChild.rotation = bladeRotation;
+						Debug.Log("Setting child rotation: " + objChild.rotation + " name: " + objChild.name);
+					}*/
+					MeshRenderer renderer = objChild.GetComponentInChildren<MeshRenderer>();
+					if (renderer != null) {
+						renderer.enabled = true;
+					}
+				}
+			//}
 		}
 
 		//Renderer[] rends = curr.GetComponentsInChildren<Renderer>();
