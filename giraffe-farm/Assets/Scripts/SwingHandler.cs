@@ -74,14 +74,14 @@ public class SwingHandler : MonoBehaviour {
 			return;
 
 		if (m_currentSwingState != SwingState.Started) {
-			m_arrow.SetActive(false);
-			m_crumbOne.SetActive(false);
-			m_crumbTwo.SetActive(false);
+			m_arrow.SetActive (false);
+			m_crumbOne.SetActive (false);
+			m_crumbTwo.SetActive (false);
 		}
 
-        if (m_currentSwingState == SwingState.Ended) {
+		if (m_currentSwingState == SwingState.Ended) {
 			float velocity = (Vector3.Distance (m_swingInputStartPosition, m_swingInputEndPosition) * 4.0f) / (0.25f * Screen.height);
-            if (velocity > 6.0f) {
+			if (velocity > 6.0f) {
 				velocity = 6.0f;
 			}
 
@@ -91,11 +91,14 @@ public class SwingHandler : MonoBehaviour {
 			m_currentSwingState = SwingState.Unstarted;
 			PlayerManager.SetRollState (true);
 			PlayerManager.IncrementHits ();
+
+			PowerBar.SetFill (m_ballRigidBody.velocity.magnitude / 6.0f);
+
 		} else if (m_currentSwingState == SwingState.Started) {
 
 			Vector3 currPos = Input.mousePosition;
 			Vector3 rawDirection = m_swingInputStartPosition - currPos;
-			Vector3 swingInputDir = new Vector3(rawDirection.x, 0.0f, rawDirection.y);
+			Vector3 swingInputDir = new Vector3 (rawDirection.x, 0.0f, rawDirection.y);
 			
 			float velocity = Vector3.Distance (m_swingInputStartPosition, currPos) / (0.25f * Screen.height);
 			
@@ -110,21 +113,22 @@ public class SwingHandler : MonoBehaviour {
 			target = PlayerManager.Ball.transform.position + (moveVector.normalized * 0.33f);
 			target.y += 0.02f;
 			m_crumbTwo.transform.position = target;
-			m_crumbTwo.transform.LookAt(m_arrow.transform.position);
-			m_crumbOne.transform.LookAt(m_arrow.transform.position);
+			m_crumbTwo.transform.LookAt (m_arrow.transform.position);
+			m_crumbOne.transform.LookAt (m_arrow.transform.position);
 			target = m_arrow.transform.position;
 			target = PlayerManager.Ball.transform.position + (moveVector.normalized * 1.33f);
 			target.y += 0.02f;
-			m_arrow.transform.LookAt(target);
+			m_arrow.transform.LookAt (target);
 
-			m_arrow.SetActive(true);
-			m_crumbOne.SetActive(true);
-			m_crumbTwo.SetActive(true);
-			
+			m_arrow.SetActive (true);
+			m_crumbOne.SetActive (true);
+			m_crumbTwo.SetActive (true);
+
+			PowerBar.SetFill (velocity / 6.0f);
+		} else {
+			PowerBar.SetFill (m_ballRigidBody.velocity.magnitude / 6.0f);
 		}
-		
-		PowerBar.SetFill (m_ballRigidBody.velocity.magnitude / 5.0f);
-    }
+	}
 
 	private SwingState SetCurrentSwingState () {
         //Debug.Log("Force: " + m_ballThrust);
