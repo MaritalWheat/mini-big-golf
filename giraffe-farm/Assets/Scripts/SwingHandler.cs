@@ -101,7 +101,10 @@ public class SwingHandler : MonoBehaviour {
 			Vector3 swingInputDir = new Vector3 (rawDirection.x, 0.0f, rawDirection.y);
 			
 			float velocity = Vector3.Distance (m_swingInputStartPosition, currPos) / (0.25f * Screen.height);
-			
+			if (velocity > 6.0f) {
+				velocity = 6.0f;
+			}
+
 			Vector3 camForward = Vector3.Scale (m_cam.forward, new Vector3 (1, 0, 1));
 			Vector3 moveVector = (swingInputDir.z * camForward + swingInputDir.x * m_cam.right);
 			Vector3 target = PlayerManager.Ball.transform.position + moveVector.normalized;
