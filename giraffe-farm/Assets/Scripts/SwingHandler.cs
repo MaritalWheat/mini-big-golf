@@ -70,14 +70,14 @@ public class SwingHandler : MonoBehaviour {
 
     void FixedUpdate()
     {
-		if (m_cam == null || m_ballRigidBody == null)
-			return;
-
 		if (m_currentSwingState != SwingState.Started) {
 			m_arrow.SetActive (false);
 			m_crumbOne.SetActive (false);
 			m_crumbTwo.SetActive (false);
 		}
+
+		if (m_cam == null || m_ballRigidBody == null)
+			return;
 
 		if (m_currentSwingState == SwingState.Ended) {
 			float velocity = (Vector3.Distance (m_swingInputStartPosition, m_swingInputEndPosition) * 4.0f) / (0.25f * Screen.height);
