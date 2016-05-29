@@ -46,10 +46,14 @@ public class GameManager : MonoBehaviour {
 	}
 
 	//debug info
-	/*void OnGUI()
+	void OnGUI()
 	{
-		GUI.Label(new Rect(0, 0, 100, 100), ((int)(1.0f / Time.smoothDeltaTime)).ToString());        
-	}*/
+		GUI.Label(new Rect(0, 0, 200, 200), ((int)(1.0f / Time.smoothDeltaTime)).ToString());        
+	}
+
+	void Awake () {
+		Application.targetFrameRate = 30;
+	}
 
 	void Start () {
 		if (Instance == null) {

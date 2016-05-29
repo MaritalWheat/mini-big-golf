@@ -62,8 +62,6 @@ public class CameraHelper : MonoBehaviour {
 			}
 		}
 
-		Quaternion bladeRotation = Quaternion.identity;
-		//Vector3 bladePos = Vector3.zero;
 		foreach (GameObject obj in toDeactivate) {
 			//if (obj.gameObject.name.Contains("Windmill")) {
 			Transform[] objChildren = obj.GetComponentsInChildren<Transform>();
@@ -154,7 +152,6 @@ public class CameraHelper : MonoBehaviour {
 			}
 		}
 
-		Quaternion bladeRotation = Quaternion.identity;
 		//Vector3 bladePos = Vector3.zero;
 		foreach (GameObject obj in toDeactivate) {
 			//if (obj.gameObject.name.Contains("Windmill")) {

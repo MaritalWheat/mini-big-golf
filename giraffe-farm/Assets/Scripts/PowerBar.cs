@@ -30,7 +30,6 @@ public class PowerBar : MonoBehaviour {
 	}
 
 	public static void SetFill (float fillPercentage) {
-		Debug.LogWarning (fillPercentage);
 		float minXScale = 0.55f;
 		float maxXScale = 11.85f;
 
