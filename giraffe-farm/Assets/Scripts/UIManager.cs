@@ -33,6 +33,13 @@ public class UIManager : MonoBehaviour {
 		if (Instance == null) {
 			Instance = this;
 		}
+
+		float referenceWidth = 1920.0f;
+		float currentWidth = Screen.width;
+
+		Canvas canvas = FindObjectOfType<Canvas> ();
+		canvas.scaleFactor = canvas.scaleFactor * (currentWidth / referenceWidth);
+		Debug.Log ("Resolution:" + " " + Screen.height + "x" + Screen.width);
 	}
 
 	public static void UpdateHits(int newHitCount) {

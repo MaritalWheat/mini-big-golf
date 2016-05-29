@@ -45,11 +45,11 @@ public class GameManager : MonoBehaviour {
 		Paused
 	}
 
-	//debug info
-	void OnGUI()
+	//debug framerate info
+	/*void OnGUI()
 	{
 		GUI.Label(new Rect(0, 0, 200, 200), ((int)(1.0f / Time.smoothDeltaTime)).ToString());        
-	}
+	}*/
 
 	void Awake () {
 		Application.targetFrameRate = 30;
