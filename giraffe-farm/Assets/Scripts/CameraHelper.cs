@@ -23,7 +23,6 @@ public class CameraHelper : MonoBehaviour {
 					GameObject curr = hits [i].transform.gameObject;
 
 					if (curr.gameObject.name.Contains ("Ball")) {
-						Debug.Log ("Nothing blocking view to ball.");
 						break;
 					}
 
@@ -63,74 +62,25 @@ public class CameraHelper : MonoBehaviour {
 		}
 
 		foreach (GameObject obj in toDeactivate) {
-			//if (obj.gameObject.name.Contains("Windmill")) {
 			Transform[] objChildren = obj.GetComponentsInChildren<Transform>();
 			foreach (Transform objChild in objChildren) {
-				/*if (objChild.gameObject.name.Contains("blade") && objChild.gameObject.name.Contains("base")) {
-						bladeRotation = objChild.rotation;
-						Debug.Log("Getting child rotation: " + bladeRotation + " name: " + objChild.name);
-					}*/
 				MeshRenderer renderer = objChild.GetComponentInChildren<MeshRenderer>();
 				if (renderer != null) {
 					renderer.enabled = false;
 				}
 			}
-			//}
-			//obj.SetActive(false);
 		}
 		
 		foreach (GameObject obj in toActivate) {
-			//obj.SetActive (true);
-			//if (obj.gameObject.name.Contains("Windmill")) {
 			Transform[] objChildren = obj.GetComponentsInChildren<Transform>();
 			foreach (Transform objChild in objChildren) {
-				/*if (objChild.gameObject.name.Contains("blade") && objChild.gameObject.name.Contains("base")) {
-						//objChild.localPosition = bladePos;
-						objChild.rotation = bladeRotation;
-						Debug.Log("Setting child rotation: " + objChild.rotation + " name: " + objChild.name);
-					}*/
 				MeshRenderer renderer = objChild.GetComponentInChildren<MeshRenderer>();
 				if (renderer != null) {
 					renderer.enabled = true;
 				}
 			}
-			//}
+
 		}
-
-		/*foreach (GameObject obj in toActivate) {
-			obj.SetActive(true);
-		}
-		
-		foreach (GameObject obj in toDeactivate) {
-			obj.SetActive (false);
-		}*/
-
-		/*Renderer[] rends = curr.GetComponentsInChildren<Renderer>();
-		//Materials[] = rend.materials;
-		for (int i = 0; i < rends.Length; i++) {
-			for (int j = 0; j < rends[i].materials.Length; j++) {
-				Material material = rends[i].materials[j];
-
-				if (!material.name.Contains ("Green") || material.name.Contains("Back")) {
-
-					Color color = rends[i].materials [j].color;
-
-					if (!material.name.Contains("Back")) {
-						color.a = 1.0f;
-					}
-
-					//change shader to transparent rendering mode
-					/*material.SetInt("_SrcBlend", 1);
-					material.SetInt("_DstBlend", 0);
-					material.SetInt("_ZWrite", 1);
-					material.DisableKeyword("_ALPHABLEND_ON");
-					material.EnableKeyword("_ALPHATEST_ON");
-					material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-					material.renderQueue = 2000;*/
-					/*rends[i].materials [j].color = color;
-				}
-			}
-		}*/
 	}
 
 	private void SetTransparent(GameObject curr) {
@@ -152,64 +102,25 @@ public class CameraHelper : MonoBehaviour {
 			}
 		}
 
-		//Vector3 bladePos = Vector3.zero;
 		foreach (GameObject obj in toDeactivate) {
-			//if (obj.gameObject.name.Contains("Windmill")) {
-				Transform[] objChildren = obj.GetComponentsInChildren<Transform>();
-				foreach (Transform objChild in objChildren) {
-					/*if (objChild.gameObject.name.Contains("blade") && objChild.gameObject.name.Contains("base")) {
-						bladeRotation = objChild.rotation;
-						Debug.Log("Getting child rotation: " + bladeRotation + " name: " + objChild.name);
-					}*/
-					MeshRenderer renderer = objChild.GetComponentInChildren<MeshRenderer>();
-					if (renderer != null) {
-						renderer.enabled = false;
-					}
+			Transform[] objChildren = obj.GetComponentsInChildren<Transform>();
+			foreach (Transform objChild in objChildren) {
+				MeshRenderer renderer = objChild.GetComponentInChildren<MeshRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false;
 				}
-			//}
-			//obj.SetActive(false);
+			}
 		}
 
 		foreach (GameObject obj in toActivate) {
-			//obj.SetActive (true);
-			//if (obj.gameObject.name.Contains("Windmill")) {
-				Transform[] objChildren = obj.GetComponentsInChildren<Transform>();
-				foreach (Transform objChild in objChildren) {
-					/*if (objChild.gameObject.name.Contains("blade") && objChild.gameObject.name.Contains("base")) {
-						//objChild.localPosition = bladePos;
-						objChild.rotation = bladeRotation;
-						Debug.Log("Setting child rotation: " + objChild.rotation + " name: " + objChild.name);
-					}*/
-					MeshRenderer renderer = objChild.GetComponentInChildren<MeshRenderer>();
-					if (renderer != null) {
-						renderer.enabled = true;
-					}
-				}
-			//}
-		}
+			Transform[] objChildren = obj.GetComponentsInChildren<Transform>();
+			foreach (Transform objChild in objChildren) {
 
-		//Renderer[] rends = curr.GetComponentsInChildren<Renderer>();
-
-		/*
-		//Materials[] = rend.materials;
-		for (int i = 0; i < rends.Length; i++) {
-			for (int j = 0; j < rends[i].materials.Length; j++) {
-				Material material = rends[i].materials[j];
-
-				if (!material.name.Contains ("Green")) {
-					Color color = material.color;
-					if (material.name.Contains("Back")) {
-						color.a = 0.0f;
-					} else {
-						color.a = 0.25f;
-					}
-					//change shader to transparent rendering mode
-					//Debug.LogError("srcblend" + material.GetInt("_SrcBlend"));
-					//Debug.LogError("dstblend" + material.GetInt("_DstBlend"));
-
-					rends[i].materials [j].color = color;
+				MeshRenderer renderer = objChild.GetComponentInChildren<MeshRenderer>();
+				if (renderer != null) {
+					renderer.enabled = true;
 				}
 			}
-		}*/
+		}
 	}
 }

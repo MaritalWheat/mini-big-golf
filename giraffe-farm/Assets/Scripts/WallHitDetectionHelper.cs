@@ -15,7 +15,7 @@ public class WallHitDetectionHelper : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
 		if (other.gameObject.tag != "Player") {
-			Debug.Log (other.gameObject.name);
+			//Debug.Log (other.gameObject.name);
 			//lol late nite hack to avoid hole logic colliders
 			if (other.gameObject.name.Contains("Model")) {
 				AudioManager.PlaySoundAtObject (this.gameObject, m_hitClip);
