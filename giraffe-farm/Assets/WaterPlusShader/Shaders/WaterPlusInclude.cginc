@@ -1,3 +1,6 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
 //Version of Sept 09, 2013
 
 #ifndef WATERPLUS_CG_INCLUDED
@@ -239,8 +242,8 @@
 //				    o.tangent = normalize( mul( _Object2World, float4(v.tangent, 0.0) ).xyz );
 //				    o.normal = normalize( mul( float4(v.normal, 0.0), _World2Object ).xyz );
 //				    o.binormal = normalize( cross(o.normal, o.tangent) );// * v.tangent.w;
-	    o.tangent = mul( _Object2World, half4(v.tangent.xyz, 0.0) );
-	    o.normal = mul( half4(v.normal.xyz, 0.0), _World2Object );
+	    o.tangent = mul( unity_ObjectToWorld, half4(v.tangent.xyz, 0.0) );
+	    o.normal = mul( half4(v.normal.xyz, 0.0), unity_WorldToObject );
 	    o.binormal = cross(o.normal, o.tangent) * v.tangent.w;
 	    
 	    o.tangent = normalize(o.tangent);
